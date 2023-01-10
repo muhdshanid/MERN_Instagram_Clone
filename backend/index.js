@@ -6,6 +6,7 @@ import { connectDB } from './config/dbConnect.js'
 import authRouter from './routes/authRoutes.js'
 import { errorHandler, notFound } from './middlewares/errorHandler.js'
 import userRouter from './routes/userRoutes.js'
+import postRouter from './routes/postRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -20,6 +21,7 @@ app.use(express.urlencoded({extended:true}))
 
 app.use("/api/auth",authRouter)
 app.use("/api/user",userRouter)
+app.use("/api/post",postRouter)
 app.use(notFound)
 app.use(errorHandler)
 
