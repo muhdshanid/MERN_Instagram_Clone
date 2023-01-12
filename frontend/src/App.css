@@ -4,3 +4,13 @@
 .button:hover{
     color:rgb(6, 6, 90)
 }
+
+.button-two{
+    background-color: #0095f6;
+    border-radius: 8px;
+
+}
+
+.button-two:hover{
+    background-color:#0074cc;
+}

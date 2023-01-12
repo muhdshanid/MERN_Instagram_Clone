@@ -4,10 +4,11 @@ import RightSideHome from '../components/RightSideHome'
 
 const Home = () => {
   return (
-    <div className=' flex bg-gray-100 w-full ml-[16rem]'>
+    <div className=' flex  bg-gray-100 w-[70%] ml-[22%]'>
         <Post/>
         <RightSideHome/>
     </div>
+        
   )
 }
 

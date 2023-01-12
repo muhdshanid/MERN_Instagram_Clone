@@ -7,9 +7,10 @@ import {TbMessageCircle2} from 'react-icons/tb'
 import {FaRegSmile} from 'react-icons/fa'
 import {IoPaperPlaneOutline} from 'react-icons/io5'
 import { IoIosMore } from "react-icons/io";
+import { Link } from "react-router-dom";
 const Post = () => {
   return (
-    <div className="ml-[5rem] mr-[1rem] border w-6/12 bg-white rounded-lg ">
+    <div className="ml-[3rem] mr-[1rem] border w-8/12 bg-white rounded-lg ">
       <div className="flex items-center p-[0.5rem]">
         <div>
           <img
@@ -19,7 +20,8 @@ const Post = () => {
           />
         </div>
         <div className="ml-3 w-96">
-          <h3>Cristiano</h3>
+          <Link to={"/other-profile"}>
+          <h3>Cristiano</h3></Link>
         </div>
         <div className="">
           <IoIosMore size={24} />
@@ -32,13 +34,13 @@ const Post = () => {
       </div>
       <div>
         <div className="flex justify-between p-3">
-            <div className="flex gap-2 items-center">
-                <AiOutlineHeart size={28}/>
-                <TbMessageCircle2 size={28}/>
+            <div className="flex gap-3 items-center">
+                <AiOutlineHeart size={27}/>
+                <TbMessageCircle2 size={27}/>
                 <IoPaperPlaneOutline size={25}/>
             </div>
             <div>
-                <VscBookmark size={28}/>
+                <VscBookmark size={25}/>
             </div>
         </div>
       </div>

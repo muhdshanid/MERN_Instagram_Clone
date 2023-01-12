@@ -4,8 +4,8 @@ import SuggestionUsers from './SuggestionUsers';
 // import '../App.css'
 const RightSideHome = () => {
   return (
-    <div className='mt-[4rem]  ml-4 w-4/12'>
-        <div className="w-[80%] ">
+    <div className='mt-[2.5rem]  ml-6 w-5/12'>
+        <div className="w-[100%] ">
         <div className='p-3 -ml-4'>
             <div className='flex gap-4 items-center  justify-between'>
                 <div>
