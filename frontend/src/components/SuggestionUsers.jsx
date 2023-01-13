@@ -7,7 +7,7 @@ const SuggestionUsers = () => {
         <div className='flex justify-between mb-4 -ml-6 items-center'>
             <h6 className='text-gray-400 font-semibold'>Suggestions For You</h6>
             <Link to={"/suggested-users"}>
-            <h6 className='text-xs font-semibold'>See All</h6>
+            <h6 className='hover:text-gray-400 text-xs font-semibold'>See All</h6>
             </Link>
         </div>
        <div className="flex flex-col gap-4">

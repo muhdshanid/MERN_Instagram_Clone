@@ -6,11 +6,11 @@ import { comparePassword, createToken, hashedPassword } from "../services/authSe
 export const registerUser = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
-    const { email ,username} = req.body;
     try {
+      const { email ,username} = req.body;
       const emailExist = await UserModel.findOne({ email });
       const usernameExist = await UserModel.findOne({username})
-      if (!emailExist) {
+      if (!emailExist && !usernameExist) {
         const hashed = await hashedPassword(req.body.password);
         req.body.password = hashed
         const user = await UserModel.create(req.body);
@@ -18,21 +18,30 @@ export const registerUser = asyncHandler(async (req, res) => {
         return res
           .status(201)
           .json({token,user });
-      } else if(usernameExist) {
-        //username already taken
-        return res
-          .status(400)
-          .json({
-            errors: [{ msg: `${username} is already exist`, param: "username" }],
-          });
+      } else if(emailExist && usernameExist) {
+           //username and email already taken
+           return res
+           .status(400)
+           .json({
+             errors: [{ msg: `${username} is already taken`, param: "username" },
+             {msg: `${email} is already exist`, param: "email"}],
+           });
       }
-       else {
+       else if(emailExist){
         //email already taken
-        return res
-          .status(400)
-          .json({
-            errors: [{ msg: `${email} is already taken`, param: "email" }],
-          });
+       return res
+       .status(400)
+       .json({
+         errors: [{ msg: `${email} is already exist`, param: "email" }],
+       });
+       
+      }else{
+            //username already taken
+            return res
+            .status(400)
+            .json({
+              errors: [{ msg: `${username} is already taken`, param: "username" }],
+            });
       }
     } catch (error) {
       console.log(error.message);

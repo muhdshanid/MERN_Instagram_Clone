@@ -23,7 +23,7 @@ const EditProfile = () => {
           </div>
         </div>
         <div className="w-[70%] ml-16">
-          {toggleOptions ?<div className="pl-12 py-4 w-full ">
+          {toggleOptions ?<div className="pl-12 transition-all py-4 w-full ">
             <div className="flex items-center gap-8 mt-6 ml-6">
               <div>
                 <img
@@ -180,7 +180,7 @@ const EditProfile = () => {
             <div className="ml-20 pl-4 py-4 ">
                 <button className="button-two px-4 font-semibold py-1 text-white">Submit</button>
             </div>
-          </div> : <div className="pl- py-4 w-full h-screen">
+          </div> : <div className="pl- py-4 transition-all w-full h-screen">
           <div className="flex items-center gap-8 mt-6 ml-16">
               <div>
                 <img
@@ -239,7 +239,7 @@ const EditProfile = () => {
                 <button className="button-two px-4 font-semibold text-white py-1">Change password</button>
             </div>
             <div className="ml-20 pl-14 pt-6">
-            <Link className="button ">Forgot password?</Link>
+            <Link className="button " to={'/forgot-password'}>Forgot password?</Link>
             </div>
           </div>
           }

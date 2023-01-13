@@ -8,43 +8,47 @@ import {FaRegSmile} from 'react-icons/fa'
 import {IoPaperPlaneOutline} from 'react-icons/io5'
 import { IoIosMore } from "react-icons/io";
 import { Link } from "react-router-dom";
+import EmojiPicker from 'emoji-picker-react';
+import { useState } from "react";
+
 const Post = () => {
+  const [emojiShow, setEmojiShow] = useState(false)
   return (
-    <div className="ml-[3rem] mr-[1rem] border w-8/12 bg-white rounded-lg ">
-      <div className="flex items-center p-[0.5rem]">
+    <div className="ml-[3rem] mr-[1rem] border w-8/12 bg-white relative rounded-lg ">
+      <div onClick={()=>setEmojiShow(false)}  className="flex items-center p-[0.5rem]">
         <div>
           <img
             src={profile}
             alt="profile"
-            className="w-[3rem] h-[3rem] rounded-full"
+            className="w-[3rem] hover:text-gray-400 h-[3rem] rounded-full"
           />
         </div>
         <div className="ml-3 w-96">
-          <Link to={"/other-profile"}>
+          <Link className="hover:text-gray-400" to={"/other-profile"}>
           <h3>Cristiano</h3></Link>
         </div>
         <div className="">
-          <IoIosMore size={24} />
+          <IoIosMore className="hover:text-gray-400" size={24} />
         </div>
       </div>
-      <div>
+      <div onClick={()=>setEmojiShow(false)} >
         <div>
           <img className="h-[330px] w-full" src={postIMg} alt="post-img" />
         </div>
       </div>
-      <div>
+      <div onClick={()=>setEmojiShow(false)} >
         <div className="flex justify-between p-3">
             <div className="flex gap-3 items-center">
-                <AiOutlineHeart size={27}/>
-                <TbMessageCircle2 size={27}/>
-                <IoPaperPlaneOutline size={25}/>
+                <AiOutlineHeart className="hover:text-gray-400" size={27}/>
+                <TbMessageCircle2 className="hover:text-gray-400" size={27}/>
+                <IoPaperPlaneOutline className="hover:text-gray-400" size={25}/>
             </div>
             <div>
-                <VscBookmark size={25}/>
+                <VscBookmark className="hover:text-gray-400" size={25}/>
             </div>
         </div>
       </div>
-      <div className="flex border-b  flex-col px-3 gap-[2px]">
+      <div onClick={()=>setEmojiShow(false)}  className="flex border-b  flex-col px-3 gap-[2px]">
         <div>
             <p className="font-semibold">99,999 likes</p>
         </div>
@@ -70,17 +74,22 @@ const Post = () => {
       <div className="p-3">
         <div className="flex gap-1  justify-between">
             <div>
-                <FaRegSmile size={28}/>
+                <FaRegSmile onClick={()=>setEmojiShow(!emojiShow)} className="hover:text-gray-400 cursor-pointer" size={28}/>
             </div>
             <div className="grow">
                 <input className="w-full px-2 outline-none border-none placeholder:text-gray-400 text-black
                 "  type="text" placeholder="Add a comment..." />
             </div>
             <div className="">
-                <button className="text-blue-400">Post</button>
+                <button className="button">Post</button>
             </div>
         </div>
       </div>
+     {
+      emojiShow &&  <div className="absolute transition-all top-[19.4rem] ">
+      <EmojiPicker lazyLoadEmojis={true} height={300} width={300}/>
+    </div>
+     }
     </div>
   );
 };
