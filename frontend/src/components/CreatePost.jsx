@@ -1,13 +1,16 @@
-import React, { useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import {CiImageOn} from 'react-icons/ci'
+import { DataContext } from '../context/DataProvider';
 const CreatePost = ({setIsEditPage}) => {
+    const {setFile,setImagePreview} = useContext(DataContext)
     const hiddenFileInput = useRef(null);
         const handleClick = event => {
           hiddenFileInput.current.click();
         };
         const handleChange = event => {
-          const fileUploaded = event.target.files[0];
-          setIsEditPage(true)
+           setFile(event.target.files[0]);
+           setImagePreview(URL.createObjectURL(event.target.files[0]))
+            setIsEditPage(true)
         }; 
 
   return (
@@ -34,7 +37,7 @@ const CreatePost = ({setIsEditPage}) => {
                     Select from computer 
                 </button>
                 </label>
-                <input type="file"  ref={hiddenFileInput}
+                <input type="file"   ref={hiddenFileInput}
         onChange={handleChange}style={{display:"none"}} />
             </div>
         </div>

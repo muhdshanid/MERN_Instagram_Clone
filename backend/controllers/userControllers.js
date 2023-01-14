@@ -4,6 +4,7 @@ import { validateMongoDBID } from "../services/validateMongoDBID.js";
 
 export const updateUser = asyncHandler(async (req, res) => {
   const id = req.userId;
+  console.log(id);
   validateMongoDBID(id);
   try {
     const updateUser = await UserModel.findByIdAndUpdate(id, req.body, {

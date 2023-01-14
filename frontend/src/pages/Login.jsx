@@ -3,7 +3,6 @@ import instaFont from "../assets/images/insta-font.png";
 import {AiOutlineCheckCircle} from 'react-icons/ai'
 import {Link, useNavigate} from 'react-router-dom'
 import {RxCrossCircled} from 'react-icons/rx'
-import { useForm } from '../hooks/useForm';
 import {motion} from 'framer-motion'
 import { useDispatch } from 'react-redux';
 import { useUserLoginMutation } from '../store/services/authServices';
@@ -16,7 +15,7 @@ const Login = () => {
   const [isPasswordAvail, setIsPasswordAvail] = useState(null);
   const [errors, setErrors] = useState([]);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("");    
   const [loginUser, res] = useUserLoginMutation();
   useEffect(() => {
     if (res.isError) {
@@ -65,7 +64,7 @@ const Login = () => {
     <div className='w-full  bg-gray-100 flex-col min-h-screen'>
       <div className="   min-h-screen mx-auto  flex flex-col gap-2 justify-center ">
       <motion.div initial={{opacity:0,x:"-100vw"}}
-          animate={{opacity:1,x:0}} className=' bg-white border  -mt-[2rem] mb-4 mx-auto'>
+          animate={{opacity:1,x:0}} className=' bg-white border sm:w-10/12 md:w-8/12 lg:w-4/12 xl:w-3/12 -mt-[2rem] mb-4 mx-auto'>
            <div className='px-12 py-8'>
            <div className='flex flex-col gap-2'>
                 <div className='flex items-center justify-center'>
@@ -107,7 +106,7 @@ const Login = () => {
                     <input type="text"
                      className=' 
                     placeholder:font-light box-border border placeholder:text-gray-400 placeholder:text-sm
-                     bg-gray-100 outline-none px-4 py-1 w-[100%]' 
+                     bg-gray-100 outline-none pl-1 py-1 w-[100%]' 
                     placeholder='Password'
                     value={password}
                       name="password"
@@ -154,7 +153,7 @@ const Login = () => {
            </div>
         </motion.div>
         <motion.div initial={{opacity:0,x:"-100vw"}}
-          animate={{opacity:1,x:0}}  className='bg-white border  mb-4  mx-auto'>
+          animate={{opacity:1,x:0}}  className='bg-white border sm:w-10/12 md:w-8/12 lg:w-4/12 xl:w-3/12  mb-4  mx-auto'>
             <div className='py-6 px-11'>
                 <div className='flex items-center justify-center'>
                     <h6 className='font-normal text-base'>Don't Have an account?

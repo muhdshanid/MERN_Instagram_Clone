@@ -15,10 +15,12 @@ const authReducer = createSlice({
         setUser :(state,action)=> {
             state.user = action.payload
         },
-
+        updateUser:(state,action)=> {
+            state.user = action.payload
+        }
     }
 })
 
-export const {setToken,setUser} = authReducer.actions;
+export const {setToken,setUser,updateUser} = authReducer.actions;
 
 export default authReducer.reducer 

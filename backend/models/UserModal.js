@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     following:[{type:ObjectId,ref:"User"}],
     savedPosts:[{type:ObjectId,ref:"Post"}],
     mobilenumber:Number,
-    gender:{type:String,default:"Prefer not to say",enum:["Male","Custom","Female","Prefer not to say"]}
+    gender:{type:String,default:"Prefer not to say",enum:["Male","Other","Female","Prefer not to say"]}
 },{
     timestamps:true
 })
