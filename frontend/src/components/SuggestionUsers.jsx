@@ -1,96 +1,49 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
-import profile from "../assets/images/profile.jpg";
-const SuggestionUsers = () => {
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../store/reducers/authReducer';
+import { useFollowUnfollowUserMutation, useGetUserQuery } from '../store/services/userServices';
+import Loading from './loading/Loading';
+const SuggestionUsers = ({suggestedUser}) => {
+    const dispatch = useDispatch()
+    const { user } = useSelector((state) => state.authReducer);
+    const [followed,setFollowed] = useState(false)
+    const [followUnfollowUser,res] = useFollowUnfollowUserMutation()
+    const followHandler = (id) => {
+        followUnfollowUser(id)
+    }
+    useEffect(()=>{
+        if(res?.isSuccess) {
+        const dataFromLocalStorage =  localStorage.getItem("userData")
+        let {user,token} = JSON.parse(dataFromLocalStorage)
+        user = res?.data
+        localStorage.setItem("userData",JSON.stringify({user,token}))
+        dispatch(updateUser(res?.data))
+        }
+    },[res.isSuccess])
   return (
-    <div className='ml-4'>
-        <div className='flex justify-between mb-4 -ml-6 items-center'>
-            <h6 className='text-gray-400 font-semibold'>Suggestions For You</h6>
-            <Link to={"/suggested-users"}>
-            <h6 className='hover:text-gray-400 text-xs font-semibold'>See All</h6>
-            </Link>
-        </div>
-       <div className="flex flex-col gap-4">
-       <div className='flex gap-4 items-center justify-between'>
-            <div className='-ml-4'>
-                <img src={profile} className='w-[30px] h-[30px] rounded-full' alt="profile" />
-            </div>
-            <div className='-ml-2 grow'>
-                <h6 className='font-semibold text-sm'>Cristiano</h6>
-            </div>
-            <div>
-                <button className='button text-sm'>Follow</button>
-            </div>
-        </div>
-       <div className='flex gap-4 items-center justify-between'>
-            <div className='-ml-4'>
-                <img src={profile} className='w-[30px] h-[30px] rounded-full' alt="" />
-            </div>
-            <div className='-ml-2 grow'>
-                <h6 className='font-semibold text-sm'>Cristiano</h6>
-            </div>
-            <div>
-                <button className='button text-sm'>Follow</button>
-            </div>
-        </div>
-       <div className='flex gap-4 items-center justify-between'>
-            <div className='-ml-4'>
-                <img src={profile} className='w-[30px] h-[30px] rounded-full' alt="" />
-            </div>
-            <div className='-ml-2 grow'>
-                <h6 className='font-semibold text-sm'>Cristiano</h6>
-            </div>
-            <div>
-                <button className='button text-sm'>Follow</button>
-            </div>
-        </div>
-       <div className='flex gap-4 items-center justify-between'>
-            <div className='-ml-4'>
-                <img src={profile} className='w-[30px] h-[30px] rounded-full' alt="" />
-            </div>
-            <div className='-ml-2 grow'>
-                <h6 className='font-semibold text-sm'>Cristiano</h6>
-            </div>
-            <div>
-                <button className='button text-sm'>Follow</button>
-            </div>
-        </div>
-       <div className='flex gap-4 items-center justify-between'>
-            <div className='-ml-4'>
-                <img src={profile} className='w-[30px] h-[30px] rounded-full' alt="" />
-            </div>
-            <div className='-ml-2 grow'>
-                <h6 className='font-semibold text-sm'>Cristiano</h6>
-            </div>
-            <div>
-                <button className='button text-sm'>Follow</button>
-            </div>
-        </div>
-       <div className='flex gap-4 items-center justify-between'>
-            <div className='-ml-4'>
-                <img src={profile} className='w-[30px] h-[30px] rounded-full' alt="" />
-            </div>
-            <div className='-ml-2 grow'>
-                <h6 className='font-semibold text-sm'>Cristiano</h6>
-            </div>
-            <div>
-                <button className='button text-sm'>Follow</button>
-            </div>
-        </div>
-       <div className='flex gap-4 items-center justify-between'>
-            <div className='-ml-4'>
-                <img src={profile} className='w-[30px] h-[30px] rounded-full' alt="" />
-            </div>
-            <div className='-ml-2 grow'>
-                <h6 className='font-semibold text-sm'>Cristiano</h6>
-            </div>
-            <div>
-                <button className='button text-sm'>Follow</button>
-            </div>
-        </div>
-       </div>
-    </div>
+   suggestedUser && <div  className='flex gap-4 relative items-center justify-between'>   
+   <div className='-ml-4'>
+               <img src={suggestedUser.profilePic} className='w-[30px] h-[30px] rounded-full' alt="profile" />
+           </div>
+           <div className='-ml-2 grow'>
+               <h6 className='font-semibold text-sm'>{suggestedUser.username}</h6>
+           </div>
+           <div>
+               <button onClick={()=>followHandler(suggestedUser._id)} className={`
+               ${res.isLoading ? "text-gray-100 text-sm" : "button text-sm"}`}>
+                   {
+                       user?.following?.includes(suggestedUser._id) ? "following" : "follow"
+                   }
+               </button>
+           </div>
+           {res?.isLoading  ? (
+                  <div className="absolute  right-2 flex items-center justify-center">
+                    <Loading />
+                  </div>
+                ) : ""}
+           </div>
   )
 }
 
 export default SuggestionUsers
+

@@ -23,11 +23,48 @@ const userServices = createApi({
                     }
                 }
             }),
+            followUnfollowUser: builder.mutation({
+                query:(id) => {
+                    return {
+                        url:`follow-unfollow-user/${id}`,
+                        method:"PUT",
+                    }
+                },
+                 invalidatesTags: ["users"],
+            }),
+            getSuggestionUsers:builder.query({
+              query:()=>{
+                return {
+                  url:"suggestion-users",
+                  method:"GET"
+                }
+              },
+              // providesTags: ["users"],
+            }),
+            getPostedUser:builder.query({
+              query:(id)=>{
+                return {
+                  url:`get-posted-user/${id}`,
+                  method:"GET"
+                }
+              }
+            }),
+            getUser:builder.query({
+              query:()=>{
+                return {
+                  url:`get-user`,
+                  method:"GET"
+                }
+              },
+               providesTags: ["users"],
+            })
            
         }
     }
 })
-export const {useUserUpdateDetailsMutation} = userServices
+export const {useUserUpdateDetailsMutation,
+  useGetSuggestionUsersQuery,useGetPostedUserQuery,
+useFollowUnfollowUserMutation,useGetUserQuery} = userServices
 
 export default userServices
 

@@ -14,8 +14,8 @@ const CreatePost = ({setIsEditPage}) => {
         }; 
 
   return (
-    <div  className='w-[22rem] transition-all  mx-auto mt-[5rem]'>
-        <div className='bg-white  rounded-xl flex flex-col'>
+    <div  className='transition-all  mx-auto w-80'>
+        <div className='bg-white  rounded-xl  flex flex-col'>
             <div className='w-full border-b flex items-center justify-center'>
             <div className=' py-2 mx-auto'>
                 <h4 className='font-semibold text-md '>Create New Post</h4>

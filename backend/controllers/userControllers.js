@@ -25,12 +25,12 @@ export const followUnfollowUser = asyncHandler(async(req,res) => {
         const loggedInUser = await UserModel.findById(req.userId)
         if(!userToFollow.followers.includes(req.userId)){
             await userToFollow.updateOne({$push:{followers:req.userId}})
-            await loggedInUser.updateOne({$push:{following:id}})
-            return res.status(200).json("User has followed ")
+            const result = await UserModel.findByIdAndUpdate(req.userId,{$push:{following:id}},{ new : true})
+            return res.status(200).json(result)
         }else{
             await userToFollow.updateOne({$pull:{followers:req.userId}})
-            await loggedInUser.updateOne({$pull:{following:id}})
-            return res.status(200).json("User has unfollowed ")
+           const result = await UserModel.findByIdAndUpdate(req.userId,{$pull:{following:id}},{new:true})
+            return res.status(200).json(result)
         }
     }else{
         return res.status(400).json("You cannot follow your self")
@@ -129,3 +129,31 @@ export const allUsers = asyncHandler(async(req,res) => {
     }
  
  })
+
+ export const getPostedUser = async (req,res) => {
+    try {
+        const {id} = req.params 
+        const user = await UserModel.findById(id) 
+        if(!user){  
+            return res.status(400).json("User not found")
+        }
+        const {email,password,phonenumber,...others} = user._doc
+        return res.status(200).json(others)
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message:"Internal server error"})
+    }
+}
+ export const getLoggedInUser = async (req,res) => {
+    try {
+        const id = req.userId 
+        const user = await UserModel.findById(id) 
+        if(!user){  
+            return res.status(400).json("User not found")
+        }
+        return res.status(200).json(user)
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message:"Internal server error"})
+    }
+}

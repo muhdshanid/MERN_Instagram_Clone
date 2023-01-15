@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import PostModel from "../models/PostModal.js";
 import UserModel from "../models/UserModal.js";
 import { validateMongoDBID } from "../services/validateMongoDBID.js";
-
+import mongoose from "mongoose";
 export const createPost = asyncHandler(async (req, res) => {
   try {
     const newPost = await PostModel.create(req.body);
@@ -52,11 +52,11 @@ export const likePost = asyncHandler(async (req, res) => {
     const userId = req.userId;
     const post = await PostModel.findById(id);
     if (!post.likes.includes(userId)) {
-      await post.updateOne({ $push: { likes: userId } });
-      return res.status(200).json("Post has been liked");
+      const liked = await PostModel.findByIdAndUpdate(id,{ $push: { likes: userId } },{new:true});
+      return res.status(200).json(liked);
     } else{
-        await post.updateOne({$pull : {likes:userId}})
-        return res.status(200).json("Post has been unliked");
+        const unliked =await PostModel.findByIdAndUpdate(id,{$pull : {likes:userId}},{new:true})
+        return res.status(200).json(unliked);
     }
   } catch (error) {
     console.log(error.message);
@@ -129,3 +129,39 @@ export const commentPost = asyncHandler(async (req, res) => {
         return res.status(500).json("Internal server error");
       }
   })
+
+  export const getTimelinePost = asyncHandler(
+    async (req,res) => {
+      try {
+          const userId = req.userId
+          const currentUserPosts = await PostModel.find({postedBy:userId})
+          const followingUsersPosts = await UserModel.aggregate([
+              {$match:{
+                  _id:new mongoose.Types.ObjectId(userId)
+              }},{
+                  $lookup:{
+                      from:"posts",
+                      localField:"following",
+                      foreignField:"postedBy",
+                      as:"followingPosts"
+                  }
+              },{
+                  $project:{
+                      followingPosts:1,
+                      _id:0
+                  }
+              }
+          ])
+          
+          return res.status(200).json
+          (currentUserPosts.concat(...followingUsersPosts[0].followingPosts).sort(
+            (a,b)=> {
+                return b.createdAt - a.createdAt
+            }
+        ))
+      } catch (error) {
+          console.log(error.message);
+          return res.status(500).json("Server internal error")
+      }
+  }
+  )

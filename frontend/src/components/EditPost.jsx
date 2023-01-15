@@ -1,31 +1,80 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, {  useContext, useEffect, useState } from "react";
 import { HiOutlineArrowLeft } from "react-icons/hi";
-import { RxCrop } from "react-icons/rx";
-import ReactCrop  from "react-image-crop";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Switch from "react-switch";
-import profile from '../assets/images/profile.jpg'
-import Cropper from 'react-easy-crop'
 import "react-image-crop/dist/ReactCrop.css";
 import { FaRegSmile } from "react-icons/fa";
+import {useNavigate} from 'react-router-dom'
 import { IoImagesOutline } from "react-icons/io5";
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 import { DataContext } from "../context/DataProvider";
 import { useSelector } from "react-redux";
-import("react-image-crop")
-const EditPost = ({ setIsEditPage }) => {
+import app from "../firebase";
+import { useCreatePostMutation } from "../store/services/postServices";
+import Loading from "./loading/Loading";
+const EditPost = ({ setIsEditPage,setModalOpen }) => {
+  const navigate = useNavigate()
   const { user } = useSelector((state) => state.authReducer);
-  const [crop, setCrop] = useState()
-  const [emojiShow, setEmojiShow] = useState(false)
-  const [cropSelected, setCropSelected] = useState(false);
+  const [title, setTitle] = useState("")
+  const [uploading, setUploading] = useState(false)
   const [isPostPage, setIsPostPage] = useState(false);
   const [advSettingOpen, setAdvSettingOpen] = useState(false);
   const [discardPost, setDiscardPost] = useState(false);
-  const { imagePreview } = useContext(DataContext);
+  const { imagePreview,file } = useContext(DataContext);
+  const [createPost,res] = useCreatePostMutation()
+  useEffect(()=>{
+    if(res.isSuccess){
+      navigate("/")
+      setModalOpen(false)
+      setIsEditPage(false)
+      window.location.reload()
+    }
+  },[res.isSuccess])
+  const handlePost = (e) => {
+    e.preventDefault()
+    if(file !== null) {
+      setUploading(true)
+      const filename = new Date().getTime() + file?.name
+      const storage = getStorage(app)
+      const storageRef = ref(storage, filename);
+  
+  const uploadTask = uploadBytesResumable(storageRef, file);
+  // 1. 'state_changed' observer, called any time the state changes
+  // 2. Error observer, called on failure
+  // 3. Completion observer, called on successful completion
+  uploadTask.on('state_changed', 
+    (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log('Upload is ' + progress + '% done');
+      switch (snapshot.state) {
+        case 'paused':
+          console.log('Upload is paused');
+          break;
+        case 'running':
+          console.log('Upload is running');
+          break;
+      }
+    }, 
+    (error) => {
+      // Handle unsuccessful uploads
+    }, 
+    () => {
+      // Handle successful uploads on complete
+      // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        if(title !== ""){
+          createPost({title,image:downloadURL,postedBy:user._id})
+          setUploading(false)
+        }
+      });
+    })
+    }
 
+  }
   return (
     <>
       {isPostPage === false ? (
-        <div className="w-[22rem] relative transition-all mx-auto mt-[5rem]">
+        <div className="w-80 relative transition-all mx-auto">
           <div className="bg-white  rounded-xl flex flex-col">
             <div className="w-full px-3 py-2 flex items-center justify-between">
               <div>
@@ -47,37 +96,13 @@ const EditPost = ({ setIsEditPage }) => {
                 </h6>
               </div>
             </div>
-            <div className="bg-black  relative rounded-br-xl rounded-bl-xl">
-              <div className="p-2  w-[22rem] h-[23rem]">
-                {cropSelected ? (
-                //    <Cropper
-                //    image={imagePreview}
-                //    crop={crop}
-                //    zoom={zoom}
-                //    aspect={4 / 3}
-                //    onCropChange={setCrop}
-                //    onCropComplete={onCropComplete}
-                //    onZoomChange={setZoom}
-                //  />
-                  // <ReactCrop
-                  //   ruleOfThirds={true}
-                  //   crop={crop} onChange={c => setCrop(c)}
-                  // >
-                  //   <img
-                  //     src={imagePreview}
-                  //     alt="post"
-                      
-                  //     className="w-[21rem] h-[22rem]"
-                  //   />
-                  // </ReactCrop> 
-                  ""
-                ) : (
+            <div className="bg-black flex items-center  h-[22rem] relative rounded-br-xl rounded-bl-xl">
+              <div className="p-1">        
                   <img
                     src={imagePreview}
-                    className="w-[21rem] h-[22rem]"
+                    className="w-full  object-contain h-full"
                     alt="profile"
                   />
-                )}
               </div>
               {/* <div className="absolute bottom-2 left-2  text-white ">
                 <div
@@ -131,9 +156,9 @@ const EditPost = ({ setIsEditPage }) => {
           )}
         </div>
       ) : (
-        <div className="w-[42rem] transition-all mx-auto mt-[5rem]">
+        <div className="w-[50%] transition-all mx-auto ">
           <div className="bg-white  rounded-xl flex flex-col">
-            <div className="w-full border-b px-3 flex items-center justify-between">
+            <div className="w-full border-b px-3 flex  items-center justify-between">
               <div>
                 <HiOutlineArrowLeft
                   onClick={() => setIsPostPage(false)}
@@ -141,19 +166,29 @@ const EditPost = ({ setIsEditPage }) => {
                   size={30}
                 />
               </div>
-              <div className=" py-2 mx-auto">
-                <h4 className="font-semibold text-md ">Create New Post</h4>
+              <div className={`py-2  ${res.isLoading || uploading ? "-ml-10" : "mx-auto"}`}>
+                <h4 className={`font-semibold text-md `}>Create New Post</h4>
               </div>
-              <div>
-                <h6 className="button  font-semibold">Share</h6>
+              <div className="relative ">
+                <button  onClick={handlePost} className={` ${res.isLoading || uploading ? 
+                "hidden" : "button cursor-pointer  font-semibold"}`}>
+                  {
+                    res?.isLoading || uploading ? "" : "Share"
+                  }
+                </button>
+                {res?.isLoading || uploading ? (
+                  <div className="absolute w-80 -mt-3 -left-[11rem] flex items-center justify-center">
+                    <Loading />
+                  </div>
+                ) : ""}
               </div>
             </div>
             <div className="flex ">
-              <div className="bg-black  rounded-bl-xl">
-                <div className="p-2  w-[22rem] h-[23rem]">
+              <div className="bg-black w-full rounded-bl-xl">
+                <div className="p-1 w-full h-[23rem]">
                   <img
                     src={imagePreview}
-                    className="w-full h-full"
+                    className="w-full h-full object-contain"
                     alt="profile"
                   />
                 </div>
@@ -177,11 +212,13 @@ const EditPost = ({ setIsEditPage }) => {
                     name="caption"
                     id=""
                     cols="30"
+                    onChange={(e)=>setTitle(e.target.value)}
+                    value={title}
                     rows="10"
                     className="border-none h-52 w-full outline-none placeholder:text-gray-500 text-md"
                   ></textarea>
                   <div className="text-gray-400 flex justify-between items-center">
-                    <FaRegSmile onClick={()=>setEmojiShow(true)} size={23} />
+                    <FaRegSmile  size={23} />
                     <p className="text-sm text-gray-400 font-normal">2/2200</p>
                   </div>
                 
