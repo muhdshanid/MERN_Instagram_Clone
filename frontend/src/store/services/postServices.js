@@ -53,12 +53,23 @@ const postServices = createApi({
                 providesTags: ["posts"],
             }),
             
+            getLoggedInUserPosts: builder.query({
+                query:() => {
+                    return {
+                        url:"get-posts",
+                        method:"GET",
+                        
+                    }
+                },
+                providesTags: ["posts"],
+            }),
+            
            
         }
     }
 })
 export const {useCreatePostMutation,useGetPostsQuery,useLikePostMutation,
-useCommentPostMutation} = postServices
+useCommentPostMutation,useGetLoggedInUserPostsQuery} = postServices
 
 export default postServices
 

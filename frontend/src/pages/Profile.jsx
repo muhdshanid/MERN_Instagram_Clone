@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {CgShapeHexagon} from 'react-icons/cg'
 import {BsGrid3X3} from 'react-icons/bs'
 import {VscBookmark} from 'react-icons/vsc'
@@ -6,7 +6,9 @@ import SavedPostsTab from '../components/SavedPostTab'
 import ProfilePostsTab from '../components/ProfilePostsTab'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { DataContext } from '../context/DataProvider'
 const Profile = () => {
+    const {userPostsLength} = useContext(DataContext)
     const [toggleTabs, setToggleTabs] = useState(true)
       const {user} = useSelector(state => state.authReducer)
   return (
@@ -26,7 +28,7 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className='flex gap-4 ml-14 my-5'>
-                    <p><span className='font-semibold text-md'></span> Posts</p>
+                    <p><span className='font-semibold text-md'>{userPostsLength}</span> Posts</p>
                     <p><span className='font-semibold text-md'>{user?.followers.length}</span> followers</p>
                     <p><span className='font-semibold text-md'>{user?.following.length}</span> following</p>
                 </div>
@@ -60,7 +62,7 @@ const Profile = () => {
         </div>
         {
             toggleTabs ? <div className='ml-[1rem]  transition-all '>
-            <ProfilePostsTab/>
+            <ProfilePostsTab user={"LoggedInUser"}/>
         </div> : 
         <div className=' transition-all '>
         <SavedPostsTab/>

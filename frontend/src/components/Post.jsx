@@ -3,18 +3,24 @@ import {AiFillHeart, AiOutlineHeart} from 'react-icons/ai'
 import {VscBookmark} from 'react-icons/vsc'
 import {TbMessageCircle2} from 'react-icons/tb'
 import {FaRegSmile} from 'react-icons/fa'
-import {IoPaperPlaneOutline} from 'react-icons/io5'
+import {IoClose, IoPaperPlaneOutline} from 'react-icons/io5'
 import { IoIosMore } from "react-icons/io";
 import { Link } from "react-router-dom";
+import {ImBookmark} from 'react-icons/im'
 import EmojiPicker from 'emoji-picker-react';
 import { useState } from "react";
-import { useGetPostedUserQuery } from "../store/services/userServices";
+import { useGetPostedUserQuery, useSaveUnsavePostMutation } from "../store/services/userServices";
 import { useCommentPostMutation, useLikePostMutation } from "../store/services/postServices";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import PostDetails from "./PostDetails";
+import { updateUser } from "../store/reducers/authReducer";
+import { GrBookmark } from "react-icons/gr";
 
 const Post = ({post}) => {
   const { user } = useSelector((state) => state.authReducer);
+  const dispatch = useDispatch()
   const [postedUser, setPostedUser] = useState()
+  const [postDetailsModal, setPostDetailsModal] = useState(false)
   const [comment, setComment] = useState("")
   const [postDetails, setPostDetails] = useState(post)
   const [likes, setLikes] = useState(post.likes.length)
@@ -23,6 +29,7 @@ const Post = ({post}) => {
   const {data,isFetching} = useGetPostedUserQuery(post?.postedBy)
   const [likePost,res] = useLikePostMutation()
   const [commentPost,result] = useCommentPostMutation()
+  const [savePost,response] = useSaveUnsavePostMutation()
   useEffect(()=>{
     if(isFetching === false){
       setPostedUser(data)
@@ -40,6 +47,15 @@ const Post = ({post}) => {
       setPostDetails(result?.data)
     }
   },[result.isSuccess])
+  useEffect(()=>{
+    if(response?.isSuccess) {
+    const dataFromLocalStorage =  localStorage.getItem("userData")
+    let {user,token} = JSON.parse(dataFromLocalStorage)
+    user = response?.data
+    localStorage.setItem("userData",JSON.stringify({user,token}))
+    dispatch(updateUser(response?.data))
+    }
+},[response.isSuccess])
   const handleLike = id => {
     likePost(id)
   }
@@ -49,8 +65,12 @@ const Post = ({post}) => {
       setComment("")
     }
   }
+  const handleSave = postId => {
+    savePost(postId)
+  }
   return (
-    <div className="ml-[3rem] mr-[1rem] border w-12/12 bg-white relative rounded-lg ">
+    <>
+    <div className="ml-[3rem] mr-[1rem]  border w-12/12 bg-white   static rounded-lg ">
       <div onClick={()=>setEmojiShow(false)}  className="flex items-center p-[0.5rem]">
         <div>
           <img
@@ -60,7 +80,7 @@ const Post = ({post}) => {
           />
         </div>
         <div className="ml-3 w-96">
-          <Link className="hover:text-gray-400" to={"/other-profile"}>
+          <Link className="hover:text-gray-400" to={`${postedUser?._id === user._id ? "/profile" : `/other-profile/${postedUser?._id}`}`}>
           <h3>{postedUser?.fullname}</h3></Link>
         </div>
         <div className="">
@@ -77,15 +97,20 @@ const Post = ({post}) => {
             <div className="flex gap-3 items-center">
                 {
                   postDetails.likes.includes(user._id) ?
-                  <AiFillHeart onClick={()=>handleLike(postDetails._id)}   size={27} color="red" />
+                  <AiFillHeart className="transition-all" onClick={()=>handleLike(postDetails._id)}   size={27} color="red" />
                   :
-                  <AiOutlineHeart  onClick={()=>handleLike(postDetails._id)} className="hover:text-gray-400" size={27}/>
+                  <AiOutlineHeart  onClick={()=>handleLike(postDetails._id)} className="hover:text-gray-400
+                   transition-all" size={27}/>
                 }
-                <TbMessageCircle2 className="hover:text-gray-400" size={27}/>
+                <TbMessageCircle2 onClick={()=>setPostDetailsModal(true)} className="hover:text-gray-400" size={27}/>
                 <IoPaperPlaneOutline className="hover:text-gray-400" size={25}/>
             </div>
             <div>
-                <VscBookmark className="hover:text-gray-400" size={25}/>
+              {
+                user.savedPosts.includes(post._id) ? 
+                <ImBookmark onClick={()=>handleSave(postDetails._id)}  size={25}/> :
+                <GrBookmark onClick={()=>handleSave(postDetails._id)} className="hover:text-gray-400" size={25}/>
+              }
             </div>
         </div>
       </div>
@@ -98,11 +123,12 @@ const Post = ({post}) => {
             <p>&nbsp; {postDetails.title}</p>
         </div>
         <div>
-            <p className="text-gray-400">view all {comments} comments</p>
+            <p onClick={()=>setPostDetailsModal(true)} className=" cursor-pointer
+            text-gray-400">view all {comments} comments</p>
         </div>
       {
-        postDetails.comments.map(cmt => 
-          <div className="flex items-center">
+        postDetails?.comments?.slice(0,2).map(cmt => 
+          <div className="flex items-center" key={cmt._id}>
           <p className="font-semibold text-sm">{cmt.username}</p> 
           <p>&nbsp;{cmt.comment}</p>
       </div>)
@@ -132,6 +158,15 @@ const Post = ({post}) => {
     </div>
      }
     </div>
+    {
+      postDetailsModal && <>
+      <div className="w-[90pc] transition-all -ml-[20pc] -mt-6  min-h-[102vh] fixed bg-black/50">
+      <PostDetails 
+      setComment={setComment} comment={comment} setPostDetails={setPostDetails} setComments={setComments} setLikes={setLikes} setPostDetailsModal={setPostDetailsModal} post={postDetails} postedUser={postedUser}/>
+   </div>
+      </>
+    } 
+      </>
   );
 };
 

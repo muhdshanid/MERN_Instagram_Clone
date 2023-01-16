@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
         required:true
     },
     bio:String,
+    searchHistory:[],
     profilePic:{type:String,default:"https://cdn130.picsart.com/318381621277201.jpg"},
     followers:[{type:ObjectId,ref:"User"}],
     following:[{type:ObjectId,ref:"User"}],

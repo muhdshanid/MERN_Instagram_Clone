@@ -14,7 +14,7 @@ const RightSideHome = () => {
     },[isFetching])
 
   return (
-    <div className='mt-[2.5rem]  w-4/12 ml-16'>
+    <div className='mt-[2.5rem]    w-4/12 ml-16'>
         <div className="w-[90%] ">
         <div className='p-3 -ml-10'>
             <div className='flex gap-4 items-center  justify-between'>
@@ -37,7 +37,7 @@ const RightSideHome = () => {
             </Link>
         </div>
         <div className='ml-4'>
-        <div className="flex flex-col gap-4 -ml-5">     
+        <div className="flex flex-col gap-4  -ml-5">     
        {
          suggestionUsers?.slice(0,10).map(suggestedUser => {
             return (

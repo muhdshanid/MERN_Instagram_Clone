@@ -117,7 +117,7 @@ const SideBar = ({setModalOpen}) => {
       {
         transition((style,item)=>
           item ? <animated.div style={style}  className={`transition-all w-[400px]
-           bg-white z-[100] h-screen border  rounded-br-xl rounded-tr-xl absolute  
+           bg-white z-10 h-screen border  rounded-br-xl rounded-tr-xl absolute  
           -top-6 left-4`}>
             <Search/>
           </animated.div>  : ""

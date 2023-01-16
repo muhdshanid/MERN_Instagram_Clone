@@ -20,7 +20,9 @@ export const getLoggedInUserPosts = asyncHandler(async (req, res) => {
     if (!myPosts) {
       return res.status(200).json("You dont have any post");
     }
-    return res.status(200).json(myPosts);
+    return res.status(200).json(myPosts.sort((a,b)=> {
+      return b.createdAt - a.createdAt
+  }));
   } catch (error) {
     console.log(error.message);
     return res.status(500).json("Internal server error");
@@ -153,8 +155,7 @@ export const commentPost = asyncHandler(async (req, res) => {
               }
           ])
           
-          return res.status(200).json
-          (currentUserPosts.concat(...followingUsersPosts[0].followingPosts).sort(
+          return res.status(200).json(currentUserPosts.concat(...followingUsersPosts[0].followingPosts).sort(
             (a,b)=> {
                 return b.createdAt - a.createdAt
             }

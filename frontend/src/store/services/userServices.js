@@ -32,6 +32,15 @@ const userServices = createApi({
                 },
                  invalidatesTags: ["users"],
             }),
+            saveUnsavePost: builder.mutation({
+                query:(id) => {
+                    return {
+                        url:`save-post/${id}`,
+                        method:"PUT",
+                    }
+                },
+                 invalidatesTags: ["users"],
+            }),
             getSuggestionUsers:builder.query({
               query:()=>{
                 return {
@@ -50,21 +59,40 @@ const userServices = createApi({
               }
             }),
             getUser:builder.query({
-              query:()=>{
+              query:(id)=>{
                 return {
-                  url:`get-user`,
+                  url:`get-user/${id}`,
                   method:"GET"
                 }
               },
                providesTags: ["users"],
-            })
+            }),
+            getOtherUserPosts:builder.query({
+              query:(id)=>{
+                return {
+                  url:`get-other-user/${id}`,
+                  method:"GET"
+                }
+              },
+               providesTags: ["users"],
+            }),
+            getAllUsers:builder.query({
+              query:()=>{
+                return {
+                  url:`all-users`,
+                  method:"GET"
+                }
+              },
+               providesTags: ["users"],
+            }),
            
         }
     }
 })
 export const {useUserUpdateDetailsMutation,
   useGetSuggestionUsersQuery,useGetPostedUserQuery,
-useFollowUnfollowUserMutation,useGetUserQuery} = userServices
+useFollowUnfollowUserMutation,useGetUserQuery,useSaveUnsavePostMutation,
+useGetOtherUserPostsQuery,useGetAllUsersQuery} = userServices
 
 export default userServices
 

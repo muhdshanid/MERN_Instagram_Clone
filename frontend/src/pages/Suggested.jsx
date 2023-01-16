@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import profile from '../assets/images/image3.jpg'
 import SuggestionUser from '../components/SuggestionUser'
 import { useGetSuggestionUsersQuery } from '../store/services/userServices'
 const Suggested = () => {

@@ -40,15 +40,18 @@ const SuggestionUser = ({ suggestedUser }) => {
             onClick={() => followHandler(suggestedUser._id)}
             className={`${
               user?.following?.includes(suggestedUser._id)
-                ? "bg-gray-200 font-semibold hover:bg-gray-300 rounded-md"
+                ? `bg-gray-200  ${res.isLoading ? "text-gray-200" : ""}  font-semibold hover:bg-gray-300 rounded-md`
                 : `button-two ${res.isLoading ? "blue" : "text-white" } font-semibold`
             } px-5 py-1`}
+          
           >
             {user?.following?.includes(suggestedUser._id) ? "Following" : "Follow"}
           </button>
         </div>
         {res?.isLoading  ? (
-                  <div className="absolute  right-8 flex items-center justify-center">
+                  <div className={`
+                  absolute   ${user?.following?.includes(suggestedUser._id) ? "right-12 " : "right-8 "} 
+                  flex items-center justify-center`}>
                     <Loading />
                   </div>
                 ) : ""}

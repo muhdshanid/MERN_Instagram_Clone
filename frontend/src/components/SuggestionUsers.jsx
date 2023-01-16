@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { updateUser } from '../store/reducers/authReducer';
 import { useFollowUnfollowUserMutation, useGetUserQuery } from '../store/services/userServices';
 import Loading from './loading/Loading';
@@ -21,12 +22,13 @@ const SuggestionUsers = ({suggestedUser}) => {
         }
     },[res.isSuccess])
   return (
-   suggestedUser && <div  className='flex gap-4 relative items-center justify-between'>   
+   suggestedUser && <div  className='flex  static gap-4  items-center justify-between'>   
    <div className='-ml-4'>
                <img src={suggestedUser.profilePic} className='w-[30px] h-[30px] rounded-full' alt="profile" />
            </div>
            <div className='-ml-2 grow'>
-               <h6 className='font-semibold text-sm'>{suggestedUser.username}</h6>
+            <Link to={`/other-profile/${suggestedUser._id}`}>
+            <h6 className='font-semibold text-sm'>{suggestedUser.username}</h6></Link>
            </div>
            <div>
                <button onClick={()=>followHandler(suggestedUser._id)} className={`

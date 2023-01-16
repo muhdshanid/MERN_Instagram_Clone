@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import PostModel from "../models/PostModal.js";
 import UserModel from "../models/UserModal.js";
 import { validateMongoDBID } from "../services/validateMongoDBID.js";
 
@@ -130,10 +131,10 @@ export const allUsers = asyncHandler(async(req,res) => {
  
  })
 
- export const getPostedUser = async (req,res) => {
+ export const getPostedUser = asyncHandler(async (req,res) => {
     try {
         const {id} = req.params 
-        const user = await UserModel.findById(id) 
+        const user = await UserModel.findById(id)
         if(!user){  
             return res.status(400).json("User not found")
         }
@@ -143,17 +144,58 @@ export const allUsers = asyncHandler(async(req,res) => {
         console.log(error.message);
         return res.status(500).json({message:"Internal server error"})
     }
-}
- export const getLoggedInUser = async (req,res) => {
+})
+ export const getOtherUserPosts = asyncHandler(async (req,res) => {
     try {
-        const id = req.userId 
-        const user = await UserModel.findById(id) 
-        if(!user){  
-            return res.status(400).json("User not found")
-        }
-        return res.status(200).json(user)
+        const {id} = req.params 
+        const otherUserPosts = await PostModel.find({postedBy:id})
+        return res.status(200).json(otherUserPosts)
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({message:"Internal server error"})
     }
-}
+})
+ export const getUser =asyncHandler(
+    async (req,res) => {
+        try {
+            const {id} = req.params 
+            const user = await UserModel.findById(id) 
+            if(!user){  
+                return res.status(400).json("User not found")
+            }
+            return res.status(200).json(user)
+        } catch (error) {
+            console.log(error.message);
+            return res.status(500).json({message:"Internal server error"})
+        }
+    }
+ )
+ export const savePost = asyncHandler(async (req,res) => {
+    try {
+        const {id} = req.params
+        const userId = req.userId 
+        const user = await UserModel.findById(userId)
+        if(user.savedPosts.includes(id)){
+            const unsavePost = await UserModel.findByIdAndUpdate(userId,{$pull:{savedPosts:id}},{new:true}) 
+            return res.status(200).json(unsavePost)
+        }else{
+            const savePost = await UserModel.findByIdAndUpdate(userId,{$push:{savedPosts:id}},{new:true}) 
+            return res.status(200).json(savePost)
+        }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message:"Internal server error"})
+    }
+})
+ export const getSavedPosts = asyncHandler(async (req,res) => {
+    try {
+        const userId = req.userId 
+        const user = await UserModel.findById(userId) 
+        const savedPosts = user.savedPosts.map(savedPost => savedPost)
+        return res.status(200).json(savedPosts)
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message:"Internal server error"})
+    }
+})
+

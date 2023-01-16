@@ -22,7 +22,7 @@ function App() {
         <Route path='/' element={<MainLayout/>}>
         <Route index  element={<Home/>}/>
         <Route path='profile' element={<Profile/>}/>
-        <Route path='other-profile' element={<OtherUserProfile/>}/>
+        <Route path='other-profile/:id' element={<OtherUserProfile/>}/>
         <Route path='saved-posts' element={<SavedPosts/>}/>
         <Route path='edit-profile' element={<EditProfile/>}/>
         <Route path='forgot-password' element={<ForgotPassword/>}/>
