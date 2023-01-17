@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Outlet } from "react-router-dom";
-import CreatePost from "./CreatePost";
 import SideBar from "./SideBar";
 import {IoClose} from 'react-icons/io5'
-import EditPost from "./EditPost";
-import EditGender from "./EditGender";
+import EditPost from "./postSide/EditPost";
+import EditGender from "./userSide/EditGender";
 import { DataContext } from "../context/DataProvider";
+import CreatePost from "./postSide/CreatePost";
 const MainLayout = () => {
   const {isGenderEditModal,setIsGenderEditModal} = useContext(DataContext)
   const [modalOpen, setModalOpen] = useState(false)

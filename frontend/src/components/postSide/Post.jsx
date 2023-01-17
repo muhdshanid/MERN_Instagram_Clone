@@ -9,11 +9,11 @@ import { Link } from "react-router-dom";
 import {ImBookmark} from 'react-icons/im'
 import EmojiPicker from 'emoji-picker-react';
 import { useState } from "react";
-import { useGetPostedUserQuery, useSaveUnsavePostMutation } from "../store/services/userServices";
-import { useCommentPostMutation, useLikePostMutation } from "../store/services/postServices";
+import { useGetPostedUserQuery, useSaveUnsavePostMutation } from "../../store/services/userServices";
+import { useCommentPostMutation, useLikePostMutation } from "../../store/services/postServices";
 import { useDispatch, useSelector } from "react-redux";
 import PostDetails from "./PostDetails";
-import { updateUser } from "../store/reducers/authReducer";
+import { updateUser } from "../../store/reducers/authReducer";
 import { GrBookmark } from "react-icons/gr";
 
 const Post = ({post}) => {

@@ -1,4 +1,5 @@
 import {createApi,fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { FiDatabase } from 'react-icons/fi';
 
 const userServices = createApi({
     reducerPath: "user",
@@ -37,6 +38,45 @@ const userServices = createApi({
                     return {
                         url:`save-post/${id}`,
                         method:"PUT",
+                    }
+                },
+                 invalidatesTags: ["users"],
+            }),
+            addRecentSearchPerson: builder.mutation({
+                query:(person) => {
+                    return {
+                        url:`add-recent-search`,
+                        method:"PUT",
+                        body:{person}
+                    }
+                },
+                 invalidatesTags: ["users"],
+            }),
+            removeRecentSearchPerson: builder.mutation({
+                query:(person) => {
+                    return {
+                        url:`remove-recent-search`,
+                        method:"PUT",
+                        body:{person}
+                    }
+                },
+                 invalidatesTags: ["users"],
+            }),
+            clearRecentSearchHistory: builder.mutation({
+                query:() => {
+                    return {
+                        url:`clear-recent-search`,
+                        method:"PUT",                      
+                    }
+                },
+                 invalidatesTags: ["users"],
+            }),
+            changePassword: builder.mutation({
+                query:(data) => {
+                    return {
+                        url:`change-password`,
+                        method:"PUT",  
+                        body:data                    
                     }
                 },
                  invalidatesTags: ["users"],
@@ -85,6 +125,15 @@ const userServices = createApi({
               },
                providesTags: ["users"],
             }),
+            getSavedPosts:builder.query({
+              query:()=>{
+                return {
+                  url:`get-saved-posts`,
+                  method:"GET"
+                }
+              },
+               providesTags: ["users"],
+            }),
            
         }
     }
@@ -92,7 +141,9 @@ const userServices = createApi({
 export const {useUserUpdateDetailsMutation,
   useGetSuggestionUsersQuery,useGetPostedUserQuery,
 useFollowUnfollowUserMutation,useGetUserQuery,useSaveUnsavePostMutation,
-useGetOtherUserPostsQuery,useGetAllUsersQuery} = userServices
+useGetOtherUserPostsQuery,useGetAllUsersQuery,useAddRecentSearchPersonMutation,
+useRemoveRecentSearchPersonMutation,useClearRecentSearchHistoryMutation,
+useGetSavedPostsQuery,useChangePasswordMutation} = userServices
 
 export default userServices
 

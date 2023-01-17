@@ -9,9 +9,9 @@ import { TbMessageCircle2 } from 'react-icons/tb'
 import { VscBookmark } from 'react-icons/vsc'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { updateUser } from '../store/reducers/authReducer'
-import { useCommentPostMutation, useLikePostMutation } from '../store/services/postServices'
-import { useSaveUnsavePostMutation } from '../store/services/userServices'
+import { updateUser } from '../../store/reducers/authReducer'
+import { useCommentPostMutation, useLikePostMutation } from '../../store/services/postServices'
+import { useSaveUnsavePostMutation } from '../../store/services/userServices'
 import Comment from './Comment'
 
 const PostDetails = ({post,postedUser,setPostDetailsModal,setLikes
@@ -57,7 +57,7 @@ const PostDetails = ({post,postedUser,setPostDetailsModal,setLikes
   return (
     <div className={`w-[67%] transition-all  ml-[13%] rounded-md
        mx-auto h-[89vh] my-10 flex absolute  items-center justify-between `}>
-        <div onClick={()=>setPostDetailsModal(false)} className="absolute  -top-6 -right-[9rem] text-white">
+        <div onClick={()=>setPostDetailsModal(false)} className="absolute  -top-6 -right-[8rem] text-white">
    <IoClose className=" cursor-pointer" size={30}/>
  </div>
         <div className='w-[50%] p-4 h-full flex bg-black/100'>

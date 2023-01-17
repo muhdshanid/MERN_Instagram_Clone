@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { updateUser } from '../store/reducers/authReducer';
-import { useCommentPostMutation, useLikePostMutation } from '../store/services/postServices';
-import { useSaveUnsavePostMutation } from '../store/services/userServices';
-import PostDetails from './PostDetails';
+import { updateUser } from '../../store/reducers/authReducer';
+import { useCommentPostMutation, useLikePostMutation } from '../../store/services/postServices';
+import { useSaveUnsavePostMutation } from '../../store/services/userServices';
+import PostDetails from '../postSide/PostDetails';
 
 const UserPost = ({post}) => {
     const { user } = useSelector((state) => state.authReducer);

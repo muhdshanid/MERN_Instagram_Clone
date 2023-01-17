@@ -7,11 +7,11 @@ import { FaRegSmile } from "react-icons/fa";
 import {useNavigate} from 'react-router-dom'
 import { IoImagesOutline } from "react-icons/io5";
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
-import { DataContext } from "../context/DataProvider";
+import { DataContext } from "../../context/DataProvider";
 import { useSelector } from "react-redux";
-import app from "../firebase";
-import { useCreatePostMutation } from "../store/services/postServices";
-import Loading from "./loading/Loading";
+import app from "../../firebase";
+import { useCreatePostMutation } from "../../store/services/postServices";
+import Loading from "../loading/Loading";
 const EditPost = ({ setIsEditPage,setModalOpen }) => {
   const navigate = useNavigate()
   const { user } = useSelector((state) => state.authReducer);
@@ -96,11 +96,12 @@ const EditPost = ({ setIsEditPage,setModalOpen }) => {
                 </h6>
               </div>
             </div>
-            <div className="bg-black flex items-center  h-[22rem] relative rounded-br-xl rounded-bl-xl">
+            <div className="bg-black flex items-center w-[20rem]
+              h-[22rem] relative rounded-br-xl rounded-bl-xl">
               <div className="p-1">        
                   <img
                     src={imagePreview}
-                    className="w-full  object-contain h-full"
+                    className=" object-contain w-[20rem] h-[21rem]"
                     alt="profile"
                   />
               </div>
@@ -140,9 +141,9 @@ const EditPost = ({ setIsEditPage,setModalOpen }) => {
               </div>
               <div
                 onClick={() => setIsEditPage(false)}
-                className="w-full cursor-pointer  border-b"
+                className="w-full cursor-pointer     border-b"
               >
-                <div className="flex m-3 items-center   justify-center">
+                <div className="flex m-3 items-center justify-center">
                   <h6 className="text-sm  font-bold text-red-500">Discard</h6>
                 </div>
               </div>

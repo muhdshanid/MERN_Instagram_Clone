@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useGetSuggestionUsersQuery } from '../store/services/userServices';
-import SuggestionUsers from './SuggestionUsers';
+import SuggestionUsers from './userSide/SuggestionUsers';
 const RightSideHome = () => {
     const { user } = useSelector((state) => state.authReducer);
     const [suggestionUsers, setSuggestionUsers] = useState()

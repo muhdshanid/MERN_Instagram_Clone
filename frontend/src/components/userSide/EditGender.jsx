@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { DataContext } from "../context/DataProvider";
+import { DataContext } from "../../context/DataProvider";
 
 const EditGender = () => {
     const {setIsGenderEditModal,gender,setGender} = useContext(DataContext)

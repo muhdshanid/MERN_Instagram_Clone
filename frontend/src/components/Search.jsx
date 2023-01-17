@@ -1,24 +1,60 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useGetAllUsersQuery } from '../store/services/userServices';
-import profile from '../assets/images/profile.jpg'
+import { useAddRecentSearchPersonMutation, useClearRecentSearchHistoryMutation, useGetAllUsersQuery, useRemoveRecentSearchPersonMutation } from '../store/services/userServices';
 import { IoClose } from 'react-icons/io5';
+import { updateUser } from '../store/reducers/authReducer';
 const Search = () => {
+  const dispatch = useDispatch()
   const { user } = useSelector((state) => state.authReducer);
   const [recentSearch, setRecentSearch] = useState([])
   const [allUsers, setAllUsers] = useState([])
   const [search, setSearch] = useState("")
   const {data,isFetching} = useGetAllUsersQuery()
+  const [addPerson,res] = useAddRecentSearchPersonMutation()
+  const [removePerson,response] = useRemoveRecentSearchPersonMutation()
+  const [clearSearch,result] = useClearRecentSearchHistoryMutation()
   useEffect(()=>{
     if(isFetching === false){
       setAllUsers(data)
     }
   },[isFetching])
-  const handleRecentSearch = person => {
-    setRecentSearch([...recentSearch,person])
+  useEffect(()=>{
+    if(res?.isSuccess) {
+    const dataFromLocalStorage =  localStorage.getItem("userData")
+    let {user,token} = JSON.parse(dataFromLocalStorage)
+    user = res?.data
+    localStorage.setItem("userData",JSON.stringify({user,token}))
+    dispatch(updateUser(res?.data))
+    }
+},[res.isSuccess])
+useEffect(()=>{
+  if(response?.isSuccess) {
+  const dataFromLocalStorage =  localStorage.getItem("userData")
+  let {user,token} = JSON.parse(dataFromLocalStorage)
+  user = response?.data
+  localStorage.setItem("userData",JSON.stringify({user,token}))
+  dispatch(updateUser(response?.data))
   }
-  console.log(recentSearch);
+},[response.isSuccess])
+useEffect(()=>{
+  if(result?.isSuccess) {
+  const dataFromLocalStorage =  localStorage.getItem("userData")
+  let {user,token} = JSON.parse(dataFromLocalStorage)
+  user = result?.data
+  localStorage.setItem("userData",JSON.stringify({user,token}))
+  dispatch(updateUser(result?.data))
+  }
+},[result.isSuccess])
+  const addRecentSearchPerson = person => {
+    addPerson(person)
+  }
+  const removeRecentSearchPerson = person => {
+    removePerson(person)
+  }
+  const clearRecentSearchHistory = person => {
+    clearSearch()
+  }
   return (
     <div className='w-full flex  flex-col'>
       <div className='flex w-full flex-col gap-8 m-8 mt-6'>
@@ -38,33 +74,38 @@ const Search = () => {
           <div className='mt-8'>
             <h6 className='font-semibold text-md'>Recent</h6>
           </div>
-          <div className='mt-8'>
-            <button className='font-semibold text-md button'>Clear all</button>
+          {
+            user.searchHistory.length > 0 && <div className='mt-8'>
+            <button onClick={()=>clearRecentSearchHistory()} className='font-semibold  cursor-pointer text-md button'>Clear all</button>
           </div>
+          }
           </div>
             <div className='flex  flex-col py-3 gap-4'>
           <div>
             <div className=' overflow-y-scroll w-[100%] overflow-x-hidden h-[72vh] -ml-8  '>
           {
-            recentSearch.map(person => (
-              <div className='flex  justify-between 
+           user.searchHistory.length > 0 ? user.searchHistory.map(person => (
+              <div className='flex  cursor-pointer justify-between 
                 gap-3 pl-6 py-2  w-[100%] items-center hover:bg-gray-100'>
             <div className='flex items-center gap-4'>
             <div>
             <img src={person.profilePic} className='w-[48px] h-[48px] rounded-full' alt="profile" />
             </div>
             <div className='flex flex-col gap-0'>
-              
+              <Link to={`/other-profile/${person._id}`}>
               <h6 className='font-semibold text-sm '>{person.fullname}</h6>
-             
+              </Link>                                
               <p className='font-normal text-sm text-gray-400'>{person.username}</p>
             </div>
             </div>
-            <div className=' pr-4 '>
-              <IoClose className=' cursor-pointer' size={25}/>
+            <div className=' pr-4 cursor-pointer'>
+              <IoClose onClick={()=>removeRecentSearchPerson(person)} className='text-gray-400' size={25}/>
             </div>
           </div>
-            )) 
+            )) : 
+            <div className='w-[100%] -mt-8 h-[100%] flex items-center justify-center'>
+              <h6 className='text-gray-400 text-sm font-semibold'>No recent searches.</h6>
+            </div>
           } 
           </div>
           </div>
@@ -73,7 +114,7 @@ const Search = () => {
 {
   allUsers.length > 0 && search !== ""? allUsers.map(person => (
     person.username.includes(search) && person._id !== user._id  ? 
-    <Link key={person._id} onClick={()=>handleRecentSearch(person)}
+    <Link key={person._id} onClick={()=>addRecentSearchPerson(person)}
      className='cursor-pointer' to={`/other-profile/${person._id}`}> 
      <div className='flex -ml-8 gap-3 pl-12 py-2 w-[30rem] items-center hover:bg-gray-100'>
     <div>

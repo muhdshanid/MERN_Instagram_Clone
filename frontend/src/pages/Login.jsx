@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useUserLoginMutation } from '../store/services/authServices';
 import { showError } from '../utils/showError';
 import { setToken, setUser } from '../store/reducers/authReducer';
+import Loading from '../components/loading/Loading';
 const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -145,6 +146,11 @@ const Login = () => {
                     } 
                       font-semibold`}>{res?.isLoading ? "Log in" : "Log in"}</button>
                 </div>
+                {res?.isLoading && (
+                  <div className="absolute w-80 -mt-7 -ml-12 flex items-center justify-center">
+                    <Loading />
+                  </div>
+                )}
                </form>
                 <div className="flex my-4 items-center justify-center">
             <Link className="button text-xs font-normal" to={'/forgot-password'}>Forgot password?</Link>

@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react'
 import {CiImageOn} from 'react-icons/ci'
-import { DataContext } from '../context/DataProvider';
+import { DataContext } from '../../context/DataProvider';
 const CreatePost = ({setIsEditPage}) => {
     const {setFile,setImagePreview} = useContext(DataContext)
     const hiddenFileInput = useRef(null);
@@ -33,7 +33,8 @@ const CreatePost = ({setIsEditPage}) => {
             </div>
             <div className='mx-auto mt-0 mb-20'>
                 <label htmlFor="file-input">
-                <button onClick={handleClick} className='button-two text-sm font-semibold text-white px-4 py-1.5'>
+                <button onClick={handleClick} 
+                className='button-two text-sm font-semibold text-white px-4 py-1.5'>
                     Select from computer 
                 </button>
                 </label>

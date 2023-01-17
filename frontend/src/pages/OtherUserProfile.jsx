@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import profile from "../assets/images/profile.jpg"
 import {BsGrid3X3} from 'react-icons/bs'
 import {VscBookmark} from 'react-icons/vsc'
-import SavedPostsTab from '../components/SavedPostTab'
-import ProfilePostsTab from '../components/ProfilePostsTab'
+import SavedPostsTab from '../components/postSide/SavedPostTab'
+import ProfilePostsTab from '../components/postSide/ProfilePostsTab'
 import { Link, useLocation } from 'react-router-dom'
 import { FaUserPlus } from 'react-icons/fa'
 import { IoIosMore } from 'react-icons/io'
@@ -95,8 +95,8 @@ const OtherUserProfile = () => {
                 </div>
             </div>
         </div>
-        <div className='relative'>
-            <div className='ml-[18.5rem]  p-4 gap-16 flex'>
+        <div className='relative ml-[18.5rem]'>
+            <div className='  p-4 gap-16 flex'>
                 <div onClick={()=>setToggleTabs(true)} className=' transition-all flex cursor-pointer items-center gap-1 '>
                     <BsGrid3X3 className={` ${!toggleTabs ? "text-gray-400" : ""}`} size={12}/>
                     <h6 className={`font-semibold uppercase text-xs ${!toggleTabs ? "text-gray-400" : ""}`}>Posts</h6>
@@ -105,10 +105,10 @@ const OtherUserProfile = () => {
                     <VscBookmark className={` ${toggleTabs ? "text-gray-400" : ""}`} size={12}/>
                     <h6 className={`font-semibold uppercase text-xs ${toggleTabs ? "text-gray-400" : ""}`}>Reels</h6>
                 </div>
-                { toggleTabs ? <div className='absolute  transition-all  -top-5 left-[19rem]'>
+                { toggleTabs ? <div className='absolute  transition-all  -top-5 left-[0.3rem]'>
                     ___________
                 </div> : 
-                <div className='absolute  transition-all  -top-5 left-[26.2rem]'>
+                <div className='absolute  transition-all  -top-5 left-[7.5rem]'>
                 ___________
             </div>
                 }

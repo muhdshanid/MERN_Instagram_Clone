@@ -1,18 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { DataContext } from "../context/DataProvider";
+import { DataContext } from "../../context/DataProvider";
 import {
 
   useGetLoggedInUserPostsQuery,
-} from "../store/services/postServices";
-import OtherUserPost from "./OtherUserPost";
+} from "../../store/services/postServices";
+import OtherUserPost from "../userSide/OtherUserPost";
 
-import UserPost from "./UserPost";
+import UserPost from "../userSide/UserPost";
 const ProfilePostsTab = ({user,otherUserPosts,otherUser}) => {
   const { setUserPostsLength } = useContext(DataContext);
   const [userPosts, setUserPosts] = useState([]);
   const { data, isFetching } = useGetLoggedInUserPostsQuery();
- console.log(otherUserPosts);
   useEffect(() => { 
     if (isFetching === false) {
       setUserPosts(data);

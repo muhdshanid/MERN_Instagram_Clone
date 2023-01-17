@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import SuggestionUser from '../components/SuggestionUser'
+import SuggestionUser from '../components/userSide/SuggestionUser'
 import { useGetSuggestionUsersQuery } from '../store/services/userServices'
 const Suggested = () => {
   const [suggestionUsers, setSuggestionUsers] = useState([])

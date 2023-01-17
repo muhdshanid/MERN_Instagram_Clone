@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser } from "../store/reducers/authReducer";
-import { useFollowUnfollowUserMutation } from "../store/services/userServices";
-import Loading from "./loading/Loading";
+import { updateUser } from "../../store/reducers/authReducer";
+import { useFollowUnfollowUserMutation } from "../../store/services/userServices";
+import Loading from "../loading/Loading";
 const SuggestionUser = ({ suggestedUser }) => {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.authReducer);

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { updateUser } from '../store/reducers/authReducer';
-import { useCommentPostMutation, useLikePostMutation } from '../store/services/postServices';
-import { useSaveUnsavePostMutation } from '../store/services/userServices';
+import { updateUser } from '../../store/reducers/authReducer';
+import { useCommentPostMutation, useLikePostMutation } from '../../store/services/postServices';
+import { useSaveUnsavePostMutation } from '../../store/services/userServices';
 import PostDetails from './PostDetails';
 
-const OtherUserPost = ({post,otherUser}) => {
+const SavedPost = ({post}) => {
+    const { user } = useSelector((state) => state.authReducer);
     const dispatch = useDispatch()
     const [postDetailsModal, setPostDetailsModal] = useState(false);
     const [comment, setComment] = useState("")
@@ -41,17 +42,17 @@ const OtherUserPost = ({post,otherUser}) => {
   return (
     <>
     <div className="">
-    <Link className="  ">
+    <Link className=" ">
       <img onClick={()=>{
         setPostDetailsModal(true)}}
-        className="w-[240px] h-[240px] object-cover"
+        className="w-[290px] h-[290px] object-cover"
         src={post.image}
         alt="post"
       />
     </Link>
   </div>
   {postDetailsModal && (
-                    <div className="w-[90pc] transition-all -ml-[20pc] -mt-[17pc] z-10 min-h-[102vh]  fixed bg-black/50">
+                    <div className="w-[90pc] transition-all -ml-[20pc] -mt-[6pc] z-10 min-h-[102vh]  fixed bg-black/50">
                       <PostDetails
                         setComment={setComment}
                         comment={comment}
@@ -60,7 +61,7 @@ const OtherUserPost = ({post,otherUser}) => {
                         setLikes={setLikes}
                         setPostDetailsModal={setPostDetailsModal}
                         post={postDetails}
-                        postedUser={otherUser}
+                        postedUser={user}
                       />
                     </div>
                   )}
@@ -68,4 +69,4 @@ const OtherUserPost = ({post,otherUser}) => {
   )
 }
 
-export default OtherUserPost
+export default SavedPost

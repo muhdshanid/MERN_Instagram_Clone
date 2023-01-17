@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import PostModel from "../models/PostModal.js";
 import UserModel from "../models/UserModal.js";
+import { comparePassword, hashedPassword } from "../services/authServices.js";
 import { validateMongoDBID } from "../services/validateMongoDBID.js";
 
 export const updateUser = asyncHandler(async (req, res) => {
@@ -170,6 +171,23 @@ export const allUsers = asyncHandler(async(req,res) => {
         }
     }
  )
+ export const getSavedPosts = asyncHandler(
+    async (req,res) => {
+        try {
+            const id = req.userId 
+            const userSavedPosts = await UserModel.findById(id).populate("savedPosts").select("savedPosts -_id")
+            if(!userSavedPosts){  
+                return res.status(400).json("User not found")
+            }
+            return res.status(200).json(userSavedPosts.savedPosts.sort( (a,b)=> {
+                return b.createdAt - a.createdAt
+            }))
+        } catch (error) {
+            console.log(error.message);
+            return res.status(500).json({message:"Internal server error"})
+        }
+    }
+ )
  export const savePost = asyncHandler(async (req,res) => {
     try {
         const {id} = req.params
@@ -187,15 +205,70 @@ export const allUsers = asyncHandler(async(req,res) => {
         return res.status(500).json({message:"Internal server error"})
     }
 })
- export const getSavedPosts = asyncHandler(async (req,res) => {
+ export const addRecentSearchPerson = asyncHandler(async (req,res) => {
     try {
+        const {person} = req.body
         const userId = req.userId 
-        const user = await UserModel.findById(userId) 
-        const savedPosts = user.savedPosts.map(savedPost => savedPost)
-        return res.status(200).json(savedPosts)
+        const user = await UserModel.findById(userId)
+        const exist = user.searchHistory.filter(user => user._id === person._id)
+        if(exist.length === 0){
+            const recentSearchAdd = await UserModel
+            .findByIdAndUpdate(userId,{$push:{searchHistory:person}},{new:true}) 
+            return res.status(200).json(recentSearchAdd)
+        }else{
+            return res.status(200).json(user)
+        }
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({message:"Internal server error"})
     }
 })
+ export const removeRecentSearchPerson = asyncHandler(async (req,res) => {
+    try {
+        const {person} = req.body
+        const userId = req.userId 
+        const user = await UserModel.findById(userId)
+        const exist = user.searchHistory.filter(user => user._id === person._id)
+        if(exist.length > 0){
+            const recentSearchRemove = await UserModel.findByIdAndUpdate(userId,{$pull:{searchHistory:person}},{new:true}) 
+            return res.status(200).json(recentSearchRemove)
+        }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message:"Internal server error"})
+    }
+})
+ export const clearRecentSearchHistory = asyncHandler(async (req,res) => {
+    try {
+        const userId = req.userId 
+        const user = await UserModel.findByIdAndUpdate(userId,{$set:{searchHistory:[]}},{new:true})
+        return res.status(200).json(user)
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message:"Internal server error"})
+    }
+})
+ export const changePassword = asyncHandler(async (req,res) => {
+    try {
+        const userId = req.userId 
+        const {oldPassword,newPassword} = req.body
+        const user = await UserModel.findById(userId)
+        if(user){
+            const matchPass = await  comparePassword(oldPassword,user.password)
+            if(matchPass){
+                const hashPass = await hashedPassword(newPassword)
+                const updateUser = await  UserModel.findByIdAndUpdate(userId,{$set:{password:hashPass}})
+                return res.status(200).json(updateUser)
+            }else{
+                return res.status(400).json({errors:[{msg:`Incorrect password`,param:"password"}]})
+
+            }
+        }
+        return res.status(200).json(user)
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({message:"Internal server error"})
+    }
+})
+
 

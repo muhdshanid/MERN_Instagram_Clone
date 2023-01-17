@@ -17,7 +17,9 @@
 .blue {
     color:#0095f6 ;
 }
-
+.inh{
+    position: inherit;
+}
 .button-three{
     background-color: #27c4f5;
 }

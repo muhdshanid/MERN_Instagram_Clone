@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Post from '../components/Post'
+import Post from '../components/postSide/Post'
 import RightSideHome from '../components/RightSideHome'
 import { useGetPostsQuery } from '../store/services/postServices'
 
