@@ -39,7 +39,7 @@ const SuggestionUsers = ({suggestedUser}) => {
                </button>
            </div>
            {res?.isLoading  ? (
-                  <div className="absolute  right-2 flex items-center justify-center">
+                  <div className="absolute  right-[8.8%] flex items-center justify-center">
                     <Loading />
                   </div>
                 ) : ""}

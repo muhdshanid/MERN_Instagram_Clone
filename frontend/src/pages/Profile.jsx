@@ -65,7 +65,7 @@ const Profile = () => {
             </div>
         </div>
         {
-            toggleTabs ? <div className='ml-[1rem]  transition-all '>
+            toggleTabs ? <div className='ml-[1rem]   transition-all '>
             <ProfilePostsTab user={"LoggedInUser"}/>
         </div> : 
         <div className=' transition-all '>

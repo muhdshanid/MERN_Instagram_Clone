@@ -56,7 +56,7 @@ useEffect(()=>{
     clearSearch()
   }
   return (
-    <div className='w-full flex  flex-col'>
+    <div className='w-full  flex  flex-col'>
       <div className='flex w-full flex-col gap-8 m-8 mt-6'>
         <div className='-ml-2'>
           <h1 className='font-semibold text-2xl'>Search</h1>

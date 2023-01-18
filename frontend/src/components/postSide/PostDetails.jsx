@@ -6,7 +6,6 @@ import { ImBookmark } from 'react-icons/im'
 import { IoIosMore } from 'react-icons/io'
 import { IoClose, IoPaperPlaneOutline } from 'react-icons/io5'
 import { TbMessageCircle2 } from 'react-icons/tb'
-import { VscBookmark } from 'react-icons/vsc'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { updateUser } from '../../store/reducers/authReducer'
@@ -98,9 +97,9 @@ const PostDetails = ({post,postedUser,setPostDetailsModal,setLikes
       </div>
       <div className='h-[290px]  overflow-hidden overflow-y-scroll'>
         {
-            post?.comments?.map(cmt => (
-                <Comment comment={cmt}/>
-            )) 
+           post.commentAllowed ?  post?.comments?.map(cmt => (
+            <Comment comment={cmt}/>
+        )) : ""
         }
       </div>
       <div className="flex border-t justify-between px-4 ">
@@ -111,7 +110,10 @@ const PostDetails = ({post,postedUser,setPostDetailsModal,setLikes
                   :
                   <AiOutlineHeart  onClick={()=>handleLike(post._id)} className="hover:text-gray-400" size={27}/>
                 }
-                <TbMessageCircle2 className="hover:text-gray-400" size={27}/>
+                {
+                  post.commentAllowed ? <TbMessageCircle2 className="hover:text-gray-400" size={27}/> 
+                  : ""
+                }
                 <IoPaperPlaneOutline className="hover:text-gray-400" size={25}/>
             </div>
             <div className='pt-2'>
@@ -122,22 +124,26 @@ const PostDetails = ({post,postedUser,setPostDetailsModal,setLikes
               }
             </div>
         </div>
-        <div className='border-b px-4'>
-            <p className="font-semibold">{post.likes.length} likes</p>
+       {
+        post.LikesCountVisible || post.postedBy === user._id ?  <div className='border-b px-4'>
+        <p className="font-semibold">{post.likes.length} likes</p>
+    </div> : ""
+       }
+       {
+        post.commentAllowed ?  <div className="flex gap-1 py-2 px-4 justify-between">
+        <div>
+            <FaRegSmile className="hover:text-gray-400 cursor-pointer" size={28}/>
         </div>
-        <div className="flex gap-1 py-2 px-4 justify-between">
-            <div>
-                <FaRegSmile className="hover:text-gray-400 cursor-pointer" size={28}/>
-            </div>
-            <div className="grow">
-                <input value={comment} onChange={(e)=>setComment(e.target.value)}
-                 className="w-full px-2 outline-none border-none placeholder:text-gray-400 text-black
-                "  type="text" placeholder="Add a comment..." />
-            </div>
-            <div className="">
-                <button onClick={()=>handleComment(post._id)} className="button">Post</button>
-            </div>
+        <div className="grow">
+            <input value={comment} onChange={(e)=>setComment(e.target.value)}
+             className="w-full px-2 outline-none border-none placeholder:text-gray-400 text-black
+            "  type="text" placeholder="Add a comment..." />
         </div>
+        <div className="">
+            <button onClick={()=>handleComment(post._id)} className="button">Post</button>
+        </div>
+    </div> : ""
+       }
         </div>
     </div>
   )

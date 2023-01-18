@@ -16,6 +16,8 @@ const EditPost = ({ setIsEditPage,setModalOpen }) => {
   const navigate = useNavigate()
   const { user } = useSelector((state) => state.authReducer);
   const [title, setTitle] = useState("")
+  const [hideLikes, setHideLikes] = useState(false)
+  const [offComment, setOffComment] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [isPostPage, setIsPostPage] = useState(false);
   const [advSettingOpen, setAdvSettingOpen] = useState(false);
@@ -63,13 +65,20 @@ const EditPost = ({ setIsEditPage,setModalOpen }) => {
       // For instance, get the download URL: https://firebasestorage.googleapis.com/...
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         if(title !== ""){
-          createPost({title,image:downloadURL,postedBy:user._id})
+          createPost({title,image:downloadURL,postedBy:user._id,
+            LikesCountVisible:!hideLikes,commentAllowed:!offComment})
           setUploading(false)
         }
       });
     })
     }
 
+  }
+  const handleLikeOnOff = (e) => {
+    e === true ? setHideLikes(true) : setHideLikes(false)
+  }
+  const handleCommentOnOff  =(e) => {
+    e === true ? setOffComment(true) : setOffComment(false)
   }
   return (
     <>
@@ -124,7 +133,7 @@ const EditPost = ({ setIsEditPage,setModalOpen }) => {
             </div>
           </div>
           {discardPost && (
-            <div className="bg-white absolute  transition-all -left-8 top-[7rem]  h-[12rem] w-[26rem] rounded-xl">
+            <div className="bg-white absolute  transition-all -left-12 top-[7rem]  h-[12rem] w-[26rem] rounded-xl">
               <div className="w-full  border-b">
                 <div className="flex flex-col m-8 mb-6">
                   <div className="flex flex-col items-center gap-2 -mt-2 ">
@@ -248,7 +257,7 @@ const EditPost = ({ setIsEditPage,setModalOpen }) => {
                           <p className="font-normal text-md ">
                             Hide like and view counts on this post
                           </p>
-                          <Switch />
+                          <Switch checked={hideLikes === true ? true : false} onChange={handleLikeOnOff} />
                         </div>
                         <div className="py-2">
                           <p className="text-xs leading-4 text-gray-400 font-normal">
@@ -272,7 +281,8 @@ const EditPost = ({ setIsEditPage,setModalOpen }) => {
                             </p>
                           </div>
                           <div>
-                            <Switch />
+                            <Switch onChange={handleCommentOnOff}
+                             checked={offComment === true ? true : false} />
                           </div>
                         </div>
                         <div className="py-2">

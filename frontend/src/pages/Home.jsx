@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Loading from '../components/loading/Loading'
 import Post from '../components/postSide/Post'
 import RightSideHome from '../components/RightSideHome'
 import { useGetPostsQuery } from '../store/services/postServices'
@@ -19,6 +20,12 @@ const Home = () => {
               <Post post={post} key={i} />
             
           ))
+        }
+        {
+          isFetching === true &&
+          <div className='flex items-center justify-center'>
+            <Loading/>
+          </div>
         }
         </div>
        <RightSideHome/>

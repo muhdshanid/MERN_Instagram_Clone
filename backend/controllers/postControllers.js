@@ -73,7 +73,7 @@ export const commentPost = asyncHandler(async (req, res) => {
       const user = await UserModel.findById(id)
       const comments = {
         user: user._id,
-        username:user.username ,
+        fullname:user.fullname ,
         comment,
         profile:user.profilePic
       };
@@ -126,6 +126,22 @@ export const commentPost = asyncHandler(async (req, res) => {
        }
        await post.save()
        return res.status(200).json(post)
+      } catch (error) {
+        console.log(error.message);
+        return res.status(500).json("Internal server error");
+      }
+  })
+  export const explorePosts = asyncHandler( async (req,res)=> {
+    try {
+       const id = req.userId
+       const user = await UserModel.findById(id)
+       if(user){
+        const posts = await PostModel.aggregate([
+          {$sample:{size:20}},
+        ])
+        const filteredPosts =  posts.filter(post => post.postedBy != id.toString())
+        return res.status(200).json(filteredPosts)
+       }
       } catch (error) {
         console.log(error.message);
         return res.status(500).json("Internal server error");

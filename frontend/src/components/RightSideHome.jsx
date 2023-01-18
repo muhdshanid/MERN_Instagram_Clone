@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useGetSuggestionUsersQuery } from '../store/services/userServices';
+import SuggestionSkeleton from './loading/SuggestionSkeleton';
 import SuggestionUsers from './userSide/SuggestionUsers';
 const RightSideHome = () => {
     const { user } = useSelector((state) => state.authReducer);
@@ -43,6 +44,18 @@ const RightSideHome = () => {
             return (
             <SuggestionUsers suggestedUser={suggestedUser} key={suggestedUser._id}/>
             )})
+        }
+        {
+            isFetching === true && <>
+            <SuggestionSkeleton/>
+            <SuggestionSkeleton/>
+            <SuggestionSkeleton/>
+            <SuggestionSkeleton/>
+            <SuggestionSkeleton/>
+            <SuggestionSkeleton/>
+            <SuggestionSkeleton/>
+            <SuggestionSkeleton/>
+            </>
         }
         </div>
         </div>

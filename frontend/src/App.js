@@ -11,6 +11,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { useSelector } from 'react-redux';
+import Explore from './pages/Explore';
+import Messages from './pages/Messages';
 function App() {
   const {user,token} = useSelector(state => state.authReducer)
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path='/' element={<MainLayout/>}>
         <Route index  element={<Home/>}/>
         <Route path='profile' element={<Profile/>}/>
+        <Route path='explore' element={<Explore/>}/>
+        <Route path='messages' element={<Messages/>}/>
         <Route path='other-profile/:id' element={<OtherUserProfile/>}/>
         <Route path='saved-posts' element={<SavedPosts/>}/>
         <Route path='edit-profile' element={<EditProfile/>}/>

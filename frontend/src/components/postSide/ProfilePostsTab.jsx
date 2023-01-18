@@ -5,6 +5,7 @@ import {
 
   useGetLoggedInUserPostsQuery,
 } from "../../store/services/postServices";
+import Loading from "../loading/Loading";
 import OtherUserPost from "../userSide/OtherUserPost";
 
 import UserPost from "../userSide/UserPost";
@@ -21,27 +22,31 @@ const ProfilePostsTab = ({user,otherUserPosts,otherUser}) => {
   return (
     <>
     {
-        user === "LoggedInUser" ? 
-        <div className="min-h-[44.5vh]">
-        <div className="flex flex-wrap gap-8">
-          {userPosts.length > 0
-            ? userPosts.map((post) => (
-                <UserPost key={post._id} post={post}/>
-              ))
-            : ""}
-        </div>
-      </div>
-      :
-      <div className="min-h-[44.5vh]">
-        <div className="flex flex-wrap gap-8">
-          {otherUserPosts.length > 0
-            ? otherUserPosts.map((post) => (
-                
-                <OtherUserPost key={post._id} otherUser={otherUser} post={post}/>
-              ))
-            : ""}
-        </div>
-      </div>
+       isFetching === true ? 
+       <div className='flex items-center -ml-20 min-h-[44.5vh] justify-center'>
+            <Loading/>
+          </div>
+       :  user === "LoggedInUser" ? 
+       <div className="min-h-[44.5vh]">
+       <div className="flex flex-wrap gap-8">
+         {userPosts.length > 0
+           ? userPosts.map((post) => (
+               <UserPost key={post._id} post={post}/>
+             ))
+           : ""}
+       </div>
+     </div>
+     :
+     <div className="min-h-[44.5vh]">
+       <div className="flex flex-wrap gap-8">
+         {otherUserPosts.length > 0
+           ? otherUserPosts.map((post) => (
+               
+               <OtherUserPost key={post._id} otherUser={otherUser} post={post}/>
+             ))
+           : ""}
+       </div>
+     </div>
     }
     </>
   );

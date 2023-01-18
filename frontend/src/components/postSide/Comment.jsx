@@ -13,7 +13,7 @@ const Comment = ({comment}) => {
     </div>
     <div className="ml-3 mr-4">
       <Link className="hover:text-gray-400 font-semibold" to={"/other-profile"}>
-      <h3>{comment?.username}</h3></Link>
+      <h3>{comment?.fullname}</h3></Link>
     </div>
       <div>
       <h3>{comment.comment}</h3>

@@ -1,6 +1,7 @@
 import expresss from 'express'
 import { commentLike, commentPost, createPost,
      deletePost,
+     explorePosts,
      getLoggedInUserPosts, getTimelinePost, likePost, updatePost } from '../controllers/postControllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 
@@ -14,4 +15,5 @@ postRouter.put("/like/:id", verifyToken, likePost);
 postRouter.put("/comment-post", verifyToken, commentPost);
 postRouter.put("/like-comment",verifyToken,commentLike)
 postRouter.delete("/delete-post/:id",verifyToken,deletePost)
+postRouter.get("/explore-posts",verifyToken,explorePosts)
 export default postRouter 

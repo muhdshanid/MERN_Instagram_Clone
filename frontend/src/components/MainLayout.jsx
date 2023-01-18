@@ -31,7 +31,7 @@ const MainLayout = () => {
             </div>
           </>
             }
-      <SideBar setModalOpen={setModalOpen}  />
+      <SideBar setModalOpen={setModalOpen} modalOpen={modalOpen} />
       <Outlet />
     </div>
   );

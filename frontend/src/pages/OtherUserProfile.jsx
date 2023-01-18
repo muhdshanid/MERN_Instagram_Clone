@@ -46,55 +46,57 @@ const OtherUserProfile = () => {
       }, [res.isSuccess]); 
   return (
     <div className='bg-gray-100 flex flex-col w-[70%] min-h-screen ml-[22%]'>
-        <div className='p-4 flex border-b'>
-            <div className='px-4 py-3 ml-10'>
-                <img src={otherUser?.profilePic} className="w-[150px] h-[150px] rounded-full" alt="" />
-            </div>
-            <div className='mx-4 my-4 flex flex-col'>
-                <div className='ml-14 py-3 flex  items-center'>
-                    <div>
-                    <h6 className='text-xl font-normal'>{otherUser?.fullname}</h6>
-                    </div>
-                    <div className='flex items-center relative grow ml-4 gap-2'>
-          <button
-            onClick={() => followHandler(otherUser?._id)}
-            className={`${
-              user?.following?.includes(otherUser?._id)
-                ? `bg-gray-200  
-                font-semibold ${res.isLoading ? "text-gray-200" : ""} hover:bg-gray-300 rounded-md`
-                : `button-two ${res.isLoading ? "blue" : "text-white" } font-semibold`
-            } px-5 py-1`}
-          
-          >
-             { 
-             user?.following?.includes(otherUser?._id) ? "Following" : "Follow"}
-          </button>
-          {res?.isLoading  ? (
-                  <div className={`absolute  ${user?.following?.includes(otherUser?._id) ? "left-12 " : "left-8 "}flex items-center justify-cente`}>
-                    <Loading />
-                  </div>
-                ) : ""}
-                        <Link to={"/edit-profile"} 
-                    className='bg-gray-200 font-semibold hover:bg-gray-300 px-3 py-1 rounded-md'>
-                        Message</Link>
-                        <button className='bg-gray-200 px-2 py-2 rounded-md'><FaUserPlus/></button>
-                        <IoIosMore size={24} /> 
-                    </div>
+       
+         <div className='p-4 flex border-b'>
+        <div className='px-4 py-3 ml-10'>
+            <img src={otherUser?.profilePic} className="w-[150px] h-[150px] rounded-full" alt="" />
+        </div>
+        <div className='mx-4 my-4 flex flex-col'>
+            <div className='ml-14 py-3 flex  items-center'>
+                <div>
+                <h6 className='text-xl font-normal'>{otherUser?.fullname}</h6>
+                </div>
+                <div className='flex items-center relative grow ml-4 gap-2'>
+      <button
+        onClick={() => followHandler(otherUser?._id)}
+        className={`${
+          user?.following?.includes(otherUser?._id)
+            ? `bg-gray-200  
+            font-semibold ${res.isLoading ? "text-gray-200" : ""} hover:bg-gray-300 rounded-md`
+            : `button-two ${res.isLoading ? "blue" : "text-white" } font-semibold`
+        } px-5 py-1`}
+      
+      >
+         { 
+         user?.following?.includes(otherUser?._id) ? "Following" : "Follow"}
+      </button>
+      {res?.isLoading  ? (
+              <div className={`absolute  ${user?.following?.includes(otherUser?._id) ? "left-12 " : "left-8 "}flex items-center justify-cente`}>
+                <Loading />
+              </div>
+            ) : ""}
+                    <Link to={"/edit-profile"} 
+                className='bg-gray-200 font-semibold hover:bg-gray-300 px-3 py-1 rounded-md'>
+                    Message</Link>
+                    <button className='bg-gray-200 px-2 py-2 rounded-md'><FaUserPlus/></button>
+                    <IoIosMore size={24} /> 
+                </div>
 
-                </div>
-                <div className='flex gap-4 ml-14 my-5'>
-                    <p><span className='font-semibold text-md'>{otherUserPosts?.length}</span> Posts</p>
-                    <p><span className='font-semibold text-md'>{otherUser?.followers.length}</span> followers</p>
-                    <p><span className='font-semibold text-md'>{otherUser?.following.length}</span> following</p>
-                </div>
-                <div className='flex flex-col ml-14 gap-2'>
-                    <h6 className='font-semibold text-md'>{otherUser?.username}</h6>
-                    <div className='w-[70%]'>
-                    <p>{otherUser?.bio}</p>
-                    </div>
+            </div>
+            <div className='flex gap-4 ml-14 my-5'>
+                <p><span className='font-semibold text-md'>{otherUserPosts?.length}</span> Posts</p>
+                <p><span className='font-semibold text-md'>{otherUser?.followers.length}</span> followers</p>
+                <p><span className='font-semibold text-md'>{otherUser?.following.length}</span> following</p>
+            </div>
+            <div className='flex flex-col ml-14 gap-2'>
+                <h6 className='font-semibold text-md'>{otherUser?.username}</h6>
+                <div className='w-[70%]'>
+                <p>{otherUser?.bio}</p>
                 </div>
             </div>
         </div>
+    </div>
+       
         <div className='relative ml-[18.5rem]'>
             <div className='  p-4 gap-16 flex'>
                 <div onClick={()=>setToggleTabs(true)} className=' transition-all flex cursor-pointer items-center gap-1 '>
