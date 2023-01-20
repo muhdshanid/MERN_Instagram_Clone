@@ -42,6 +42,16 @@ const postServices = createApi({
               },
               invalidatesTags: ["posts"],
           }),
+            likeComment: builder.mutation({
+              query:(data) => {
+                  return {
+                      url:`like-comment`,
+                      method:"PUT",
+                      body:data
+                  }
+              },
+              invalidatesTags: ["posts"],
+          }),
             getPosts: builder.query({
                 query:() => {
                     return {
@@ -78,7 +88,8 @@ const postServices = createApi({
     }
 })
 export const {useCreatePostMutation,useGetPostsQuery,useLikePostMutation,
-useCommentPostMutation,useGetLoggedInUserPostsQuery,useGetRandomPostsQuery} = postServices
+useCommentPostMutation,useGetLoggedInUserPostsQuery,useGetRandomPostsQuery
+,useLikeCommentMutation} = postServices
 
 export default postServices
 

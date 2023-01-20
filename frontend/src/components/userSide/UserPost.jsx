@@ -52,7 +52,7 @@ const UserPost = ({post}) => {
     </Link>
   </div>
   {postDetailsModal && (
-                    <div className="w-[90pc] transition-all -ml-[20pc] -mt-[20pc] z-10 min-h-[102vh]  fixed bg-black/50">
+                    <div className="w-[90pc] transition-all -ml-[20pc] -mt-[18pc] z-10 min-h-[102vh]  fixed bg-black/50">
                       <PostDetails
                         setComment={setComment}
                         comment={comment}

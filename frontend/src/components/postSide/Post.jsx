@@ -27,8 +27,8 @@ const Post = ({ post }) => {
   const [postDetailsModal, setPostDetailsModal] = useState(false);
   const [comment, setComment] = useState("");
   const [postDetails, setPostDetails] = useState(post);
-  const [likes, setLikes] = useState(post.likes.length);
-  const [comments, setComments] = useState(post.comments.length);
+  const [likes, setLikes] = useState(postDetails.likes.length);
+  const [comments, setComments] = useState(postDetails.comments.length);
   const { data, isFetching } = useGetPostedUserQuery(post?.postedBy);
   const [likePost, res] = useLikePostMutation();
   const [commentPost, result] = useCommentPostMutation();
@@ -79,7 +79,7 @@ const Post = ({ post }) => {
             <img
               src={postedUser?.profilePic}
               alt="profile"
-              className="  hover:text-gray-400 w-9 h-9 rounded-full"
+              className=" object-cover hover:text-gray-400 w-9 h-9 rounded-full"
             />
           </div>
           <div className="ml-3 w-96">
@@ -171,7 +171,7 @@ const Post = ({ post }) => {
                 className=" cursor-pointer
         text-gray-400"
               >
-                view all {comments} comments
+                view all {postDetails.comments.length} comments
               </p>
             </div>
           ) : (
@@ -180,7 +180,7 @@ const Post = ({ post }) => {
           {postDetails.commentAllowed
             ? postDetails?.comments?.slice(0, 2).map((cmt) => (
                 <div className="flex items-center" key={cmt._id}>
-                  <p className="font-semibold text-sm">{cmt.username}</p>
+                  <p className="font-semibold text-sm">{cmt.fullname}</p>
                   <p>&nbsp;{cmt.comment}</p>
                 </div>
               ))

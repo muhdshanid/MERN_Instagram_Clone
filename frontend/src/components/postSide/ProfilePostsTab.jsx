@@ -23,11 +23,11 @@ const ProfilePostsTab = ({user,otherUserPosts,otherUser}) => {
     <>
     {
        isFetching === true ? 
-       <div className='flex items-center -ml-20 min-h-[44.5vh] justify-center'>
+       <div className='flex items-center -ml-20 min-h-[44.5vh] bg-gray-100 justify-center'>
             <Loading/>
           </div>
        :  user === "LoggedInUser" ? 
-       <div className="min-h-[44.5vh]">
+       <div className="min-h-[60vh]">
        <div className="flex flex-wrap gap-8">
          {userPosts.length > 0
            ? userPosts.map((post) => (

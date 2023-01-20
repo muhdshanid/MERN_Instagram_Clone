@@ -68,7 +68,7 @@ const PostDetails = ({post,postedUser,setPostDetailsModal,setLikes
           <img
             src={postedUser?.profilePic}
             alt="profile"
-            className=" object-contain hover:text-gray-400 w-[40px] h-[40px] rounded-full"
+            className=" object-cover hover:text-gray-400 w-[40px] h-[40px] rounded-full"
           />
         </div>
         <div className="ml-3 w-96">
@@ -84,7 +84,7 @@ const PostDetails = ({post,postedUser,setPostDetailsModal,setLikes
           <img
             src={postedUser?.profilePic}
             alt="profile"
-            className=" object-contain hover:text-gray-400 w-[40px] h-[40px] rounded-full"
+            className=" object-cover hover:text-gray-400 w-[40px] h-[40px] rounded-full"
           />
         </div>
         <div className="ml-3 mr-4">
@@ -98,7 +98,8 @@ const PostDetails = ({post,postedUser,setPostDetailsModal,setLikes
       <div className='h-[290px]  overflow-hidden overflow-y-scroll'>
         {
            post.commentAllowed ?  post?.comments?.map(cmt => (
-            <Comment comment={cmt}/>
+            <Comment comment={cmt} post={post} setPostDetails={setPostDetails} setLikes={setLikes}
+            setComments={setComments}/>
         )) : ""
         }
       </div>

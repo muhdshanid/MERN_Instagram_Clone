@@ -13,15 +13,18 @@ const Explore = () => {
     },[isFetching])
   return (
     <div className='flex  bg-gray-100 min-h-screen w-[100%]  ml-[20%]'>
-        <div className='p-8 '>
+        <div className='p-8 w-full'>
                {
                 isFetching === true ? <div className='flex items-center -mt-10 min-h-screen w-[70vw]  justify-center'>
                 <Loading/>
               </div> :
-                randomPosts.length > 0 ?
+               <div className='flex bg-gray-100 flex-wrap gap-4'>
+                {randomPosts.length > 0 ?
                 randomPosts.map(post => (
-                    <ExplorePosts post={post} />
-                )) : ""
+                  <ExplorePosts key={post._id} post={post} />
+                  )) : ""
+                }
+                </div>
                }
             </div>
         </div>

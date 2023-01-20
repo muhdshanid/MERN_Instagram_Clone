@@ -2,13 +2,13 @@ import React from "react";
 import instaFont from "../assets/images/insta-font.png";
 import {GrHomeRounded} from 'react-icons/gr'
 import {FiSearch} from 'react-icons/fi'
-import {FaRegCompass} from 'react-icons/fa'
-import {RiMessengerLine} from 'react-icons/ri'
+import {FaRegCompass,FaCompass} from 'react-icons/fa'
+import {RiMessengerLine,RiMessengerFill} from 'react-icons/ri'
 import {GiHamburgerMenu} from 'react-icons/gi'
 import {Link, useLocation} from 'react-router-dom'
-import profile from '../assets/images/profile.jpg'
 import {AiOutlineHeart} from 'react-icons/ai'
-import {BsPlusSquare} from 'react-icons/bs'
+import {BsPlusSquare,BsPlusSquareFill} from 'react-icons/bs'
+import {MdHomeFilled} from 'react-icons/md'
 import { useState } from "react";
 import { useTransition,animated } from "react-spring";
 import Search from "./Search";
@@ -49,7 +49,10 @@ const SideBar = ({setModalOpen,modalOpen}) => {
        onMouseMove={()=>setHomeHover(true)}   className=" flex w-[230px]  justify-between items-center hover:bg-gray-100 h-[3.3rem]
         rounded-xl transition-all  mt-0 -ml-[36px]">
        <div className="flex gap-4 ml-4 justify-start  items-center">
-            <GrHomeRounded className="transition-all " size={homeHover ? 27 : 26}/>
+       {
+            page === "" ?  <MdHomeFilled className="transition-all -ml-1" size={homeHover ? 34 : 35}/>: 
+            <GrHomeRounded className="transition-all" size={homeHover ? 27 : 26}/>
+           }
             <h3 className={` ${page === "" ? "font-bold" : "font-normal"} text-md `}>Home</h3>
         </div>
        </Link>
@@ -65,7 +68,10 @@ const SideBar = ({setModalOpen,modalOpen}) => {
        onMouseMove={()=>setExploreHover(true)} className=" flex w-[230px]  justify-between items-center hover:bg-gray-100 h-[3.3rem]
         rounded-xl transition-all   -ml-[36px]">
        <div className="flex gap-4 ml-4 justify-start  items-center">
+           {
+            page === "explore" ?  <FaCompass className="transition-all" size={exploreHover ? 27 : 26}/>: 
             <FaRegCompass className="transition-all" size={exploreHover ? 27 : 26}/>
+           }
             <h3 className={` ${page === "explore" ? "font-bold" : "font-normal"} text-md `}>Explore</h3>
         </div>
        </Link>
@@ -73,7 +79,10 @@ const SideBar = ({setModalOpen,modalOpen}) => {
        onMouseMove={()=>setMessagesHover(true)} className=" flex w-[230px]  justify-between items-center hover:bg-gray-100 h-[3.3rem]
         rounded-xl transition-all  mt-0 -ml-[36px]">
        <div className="flex gap-4 ml-4 justify-start  items-center">
+       {
+            page === "messages" ?  <RiMessengerFill className="transition-all" size={messagesHover ? 27 : 26}/>: 
             <RiMessengerLine className="transition-all" size={messagesHover ? 27 : 26}/>
+           }
             <h3 className={` ${page === "messages" ? "font-bold" : "font-normal"} text-md `}>Messages</h3>
         </div>
        </Link>
@@ -89,7 +98,8 @@ const SideBar = ({setModalOpen,modalOpen}) => {
        onMouseMove={()=>setCreateHover(true)} className=" flex w-[230px]  justify-between items-center hover:bg-gray-100 h-[3.3rem]
         rounded-xl transition-all cursor-pointer  mt-0 -ml-[36px]">
        <div className="flex gap-4 ml-4 justify-start  items-center">
-            <BsPlusSquare className="transition-all" size={createHover ? 27 : 26}/>
+           { modalOpen === true ? <BsPlusSquareFill className="transition-all" size={createHover ? 27 : 26}/> : 
+            <BsPlusSquare className="transition-all" size={createHover ? 27 : 26}/>}
             <h3 className={` ${modalOpen === true ? "font-bold" : "font-normal"} text-md `}>Create</h3>
         </div> 
        </div>
@@ -98,8 +108,8 @@ const SideBar = ({setModalOpen,modalOpen}) => {
        justify-between items-center hover:bg-gray-100 h-[3.3rem]
         rounded-xl transition-all  mt-0 -ml-[36px]">
        <div className="flex gap-4 ml-4 justify-start  items-center">
-            <img className={`${ profileHover ? "w-9 h-9 rounded-full transition-all" :
-             "w-8 h-8 rounded-full transition-all"}`} src={user.profilePic} alt="profile" />
+            <img className={`${ profileHover ? "w-9 object-cover h-9 rounded-full transition-all" :
+             "w-8 h-8 rounded-full transition-all object-cover"}`} src={user.profilePic} alt="profile" />
             <h3  className={` ${page === "profile" ? "font-bold" : "font-normal"} text-md `}>Profile</h3>
         </div>
        </Link>

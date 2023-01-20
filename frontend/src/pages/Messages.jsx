@@ -1,13 +1,20 @@
-import React from 'react'
-import { BsCameraVideo, BsInfoCircle } from 'react-icons/bs'
-import { FaRegSmile } from 'react-icons/fa'
-import { FiSend } from 'react-icons/fi'
-import { IoCallOutline } from 'react-icons/io5'
+import React, { useEffect, useState } from 'react'
+
 import { useSelector } from 'react-redux'
+import ChatBox from '../components/ChatBox'
+import ProfileSkeleton from '../components/loading/ProfileSkeleton'
+import { useGetFollowingUsersQuery } from '../store/services/userServices'
 
 const Messages = () => {
     const {user} = useSelector(state => state.authReducer)
-
+    const [selectedUser, setSelectedUser] = useState(null)
+    const [followingUsers, setFollowingUsers] = useState([])
+    const {data,isFetching} = useGetFollowingUsersQuery()
+    useEffect(()=>{
+        if(isFetching === false){
+            setFollowingUsers(data)
+        }
+    },[isFetching])
   return (
     <div className='flex  bg-gray-100 min-h-screen w-[100%]  ml-[20%]'>
          <div className='m-6 flex rounded bg-white border w-full h-[90vh]'>
@@ -18,143 +25,31 @@ const Messages = () => {
                     </div>
                 </div>
                 <div className='w-full h-[79vh] overflow-hidden overflow-y-scroll'>
-                <div className=' p-4 hover:bg-gray-100'>
+                {
+                    isFetching ? <div className='mt-6 -ml-4 flex flex-col gap-4'>
+                        <ProfileSkeleton/> 
+                        <ProfileSkeleton/> 
+                        <ProfileSkeleton/> 
+                        <ProfileSkeleton/> 
+                        <ProfileSkeleton/> 
+                    </div>: 
+                    followingUsers.length > 0 ? 
+                    followingUsers.map(followingUser => (
+                        <div key={followingUser._id} onClick={()=>setSelectedUser(followingUser)} className=' p-4 hover:bg-gray-100'>
                     <div className='flex  gap-4 items-center'>
                         <div>
-                            <img src={user.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
+                            <img src={followingUser.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
                         </div>
                         <div>
-                            <h6>{user.fullname}</h6>
+                            <h6>{followingUser.fullname}</h6>
                         </div>
                     </div>
                 </div>
-                <div className=' p-4 hover:bg-gray-100'>
-                    <div className='flex  gap-4 items-center'>
-                        <div>
-                            <img src={user.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
-                        </div>
-                        <div>
-                            <h6>{user.fullname}</h6>
-                        </div>
-                    </div>
-                </div>
-                <div className=' p-4 hover:bg-gray-100'>
-                    <div className='flex  gap-4 items-center'>
-                        <div>
-                            <img src={user.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
-                        </div>
-                        <div>
-                            <h6>{user.fullname}</h6>
-                        </div>
-                    </div>
-                </div>
-                <div className=' p-4 hover:bg-gray-100'>
-                    <div className='flex  gap-4 items-center'>
-                        <div>
-                            <img src={user.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
-                        </div>
-                        <div>
-                            <h6>{user.fullname}</h6>
-                        </div>
-                    </div>
-                </div>
-                <div className=' p-4 hover:bg-gray-100'>
-                    <div className='flex  gap-4 items-center'>
-                        <div>
-                            <img src={user.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
-                        </div>
-                        <div>
-                            <h6>{user.fullname}</h6>
-                        </div>
-                    </div>
-                </div>
-                <div className=' p-4 hover:bg-gray-100'>
-                    <div className='flex  gap-4 items-center'>
-                        <div>
-                            <img src={user.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
-                        </div>
-                        <div>
-                            <h6>{user.fullname}</h6>
-                        </div>
-                    </div>
-                </div>
-                <div className=' p-4 hover:bg-gray-100'>
-                    <div className='flex  gap-4 items-center'>
-                        <div>
-                            <img src={user.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
-                        </div>
-                        <div>
-                            <h6>{user.fullname}</h6>
-                        </div>
-                    </div>
-                </div>
-                <div className=' p-4 hover:bg-gray-100'>
-                    <div className='flex  gap-4 items-center'>
-                        <div>
-                            <img src={user.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
-                        </div>
-                        <div>
-                            <h6>{user.fullname}</h6>
-                        </div>
-                    </div>
-                </div>
-                <div className=' p-4 hover:bg-gray-100'>
-                    <div className='flex  gap-4 items-center'>
-                        <div>
-                            <img src={user.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
-                        </div>
-                        <div>
-                            <h6>{user.fullname}</h6>
-                        </div>
-                    </div>
-                </div>
-                <div className=' p-4 hover:bg-gray-100'>
-                    <div className='flex  gap-4 items-center'>
-                        <div>
-                            <img src={user.profilePic} className='w-9 h-9 rounded-full object-cover' alt="profile" />
-                        </div>
-                        <div>
-                            <h6>{user.fullname}</h6>
-                        </div>
-                    </div>
-                </div>
+                    )) : ""
+                }
                 </div>
             </div>
-            <div className='w-[65%] h-full'>
-                <div className='border-b h-[12%]'>
-                    <div className='p-4 flex  items-center justify-between'>
-                        <div className='px-8'>
-                        <div className='flex  gap-4 items-center'>
-                        <div>
-                            <img src={user.profilePic} className='w-8 h-8 rounded-full object-cover' alt="profile" />
-                        </div>
-                        <div>
-                            <h6>{user.fullname}</h6>
-                        </div>
-                    </div>
-                        </div>
-                        <div className='px-8'>
-                            <div className='flex gap-4'>
-                                <IoCallOutline size={27}/>
-                                <BsCameraVideo size={27}/>
-                                <BsInfoCircle size={27}/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='w-full h-[65vh]'></div>
-                    <div>
-                        <div className='flex p-4 '>
-                            <div className='flex py-2 px-5 justify-between rounded-full w-full border'>
-                                <FaRegSmile size={27}/>
-                                <input type="text" className='outline-none 
-                                px-2 grow placeholder:text-gray-300'
-                                 placeholder='Message...' />
-                                 <FiSend size={27}/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ChatBox selectedUser={selectedUser}/>
          </div>
     </div>
   )

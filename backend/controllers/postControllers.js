@@ -111,9 +111,10 @@ export const commentPost = asyncHandler(async (req, res) => {
     try {
        const {postId,commentId} = req.body
        const id = req.userId
+       console.log(postId,commentId);
        const post = await PostModel.findById(postId)
        const comment = post.comments.find(cmt => {
-        return cmt._id.toString() === commentId 
+        return cmt._id.toString() === commentId
        })
        if(comment ){
         if(!comment.likes.includes(id)){

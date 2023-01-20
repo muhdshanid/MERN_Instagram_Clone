@@ -3,18 +3,15 @@ import Animate from './Animate'
 
 const ProfileSkeleton = () => {
   return (
-    <div className='bg-transparent   -ml-6 mt-2 flex z-10  gap-20'>
-    <div className='w-[150px] px-4 py-3 ml-10 h-[150px] rounded-full  bg-indigo-50 sticky  overflow-hidden '>
+    <div className='bg-transparent   flex items-center justify-center   z-10  gap-6'>
+    <div className='w-[50px]  h-[50px] rounded-full  bg-indigo-50 sticky  overflow-hidden '>
   <Animate/>
 </div>
-  <div className='flex flex-col gap-2 mt-6'>
-  <div  className='w-[300px] h-[30px] rounded-md  bg-indigo-50 sticky  overflow-hidden '>
+  <div className='flex flex-col gap-2 '>
+  <div  className='w-[200px] h-[10px] rounded-md  bg-indigo-50 sticky  overflow-hidden '>
   <Animate/>
 </div>
-  <div  className='w-[250px] h-[30px] rounded-md  bg-indigo-50 sticky  overflow-hidden '>
-  <Animate/>
-</div>
-  <div  className='w-[250px] h-[30px] rounded-md  bg-indigo-50 sticky  overflow-hidden '>
+  <div  className='w-[200px] h-[10px] rounded-md  bg-indigo-50 sticky  overflow-hidden '>
   <Animate/>
 </div>
   </div>

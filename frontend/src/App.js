@@ -33,8 +33,8 @@ function App() {
         <Route path='suggested-users' element={<Suggested/>}/>
       </Route> : ""
       }
-      <Route path='/login' element={user === null ? <Login/> : ""}/>
-      <Route path='/signup' element={user === null ? <Signup/> : ""}/>
+      <Route path='/login' element={ <Login/>}/>
+      <Route path='/signup' element={ <Signup/> }/>
     </Routes>
     </BrowserRouter>
     </div>

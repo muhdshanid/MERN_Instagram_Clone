@@ -209,7 +209,7 @@ const EditPost = ({ setIsEditPage,setModalOpen }) => {
                     <img
                       src={user.profilePic}
                       alt="profile"
-                      className="w-[2rem] h-[2rem] rounded-full"
+                      className="w-[2rem] h-[2rem]  object-cover rounded-full"
                     />
                   </div>
                   <div className="flex flex-col">

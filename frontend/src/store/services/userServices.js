@@ -134,6 +134,15 @@ const userServices = createApi({
               },
                providesTags: ["users"],
             }),
+            getFollowingUsers:builder.query({
+              query:()=>{
+                return {
+                  url:`get-following-users`,
+                  method:"GET"
+                }
+              },
+               providesTags: ["users"],
+            }),
            
         }
     }
@@ -143,7 +152,7 @@ export const {useUserUpdateDetailsMutation,
 useFollowUnfollowUserMutation,useGetUserQuery,useSaveUnsavePostMutation,
 useGetOtherUserPostsQuery,useGetAllUsersQuery,useAddRecentSearchPersonMutation,
 useRemoveRecentSearchPersonMutation,useClearRecentSearchHistoryMutation,
-useGetSavedPostsQuery,useChangePasswordMutation} = userServices
+useGetSavedPostsQuery,useChangePasswordMutation,useGetFollowingUsersQuery} = userServices
 
 export default userServices
 

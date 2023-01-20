@@ -6,6 +6,6 @@ import { verifyToken } from "../middlewares/verifyToken.js";
 const messageRouter = express.Router();
 
 messageRouter.post("/new",verifyToken,createMessage)
-messageRouter.get("/get-messages/:to",getMessage)
+messageRouter.get("/get-messages/:to",verifyToken,getMessage)
 
 export default messageRouter

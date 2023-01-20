@@ -19,7 +19,7 @@ const Profile = () => {
         <div className='p-4 flex border-b'>
             <div className='px-4 py-3 ml-10'>
                 <img onClick={()=>setProfileChangePopUp(true)} src={user?.profilePic} className="
-                w-[150px] h-[150px] rounded-full cursor-pointer" alt="" />
+                w-[150px] h-[150px] rounded-full object-cover cursor-pointer" alt="" />
             </div>
             <div className='mx-4 my-4 flex flex-col'>
                 <div className='ml-14 py-3 flex justify-between items-center'>

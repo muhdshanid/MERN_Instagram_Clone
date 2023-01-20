@@ -45,13 +45,12 @@ const ExplorePosts = ({post}) => {
     }, [response.isSuccess]);
   
   return (
-    <>
-    <div className='flex flex-wrap gap-4'>
-                            <img onClick={()=>setPostDetailsModal(true)} src={postDetails.image} alt="post" className='object-cover
-                             w-[300px] h-[300px] cursor-pointer' />
-    </div>
+    <div className='w-[300px] h-[300px]'>
+    <img onClick={()=>setPostDetailsModal(true)} src={postDetails.image} alt="post" className='object-cover
+      cursor-pointer w-[300px] h-[300px] ' />
     {postDetailsModal && (
-                    <div className="w-[90pc] transition-all -ml-[20pc] -mt-[21pc] z-10 min-h-[102vh]  fixed bg-black/50">
+                    <div className="w-[90pc] transition-all
+                     -ml-[20pc] -mt-[21pc] z-10 min-h-[100vh]  fixed bg-black/50">
                       <PostDetails
                         setComment={setComment}
                         comment={comment}
@@ -64,7 +63,7 @@ const ExplorePosts = ({post}) => {
                       />
                     </div>
                   )}
-    </>
+    </div>
   )
 }
 
